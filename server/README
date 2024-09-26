@@ -1,0 +1,18 @@
+### Kind Threads
+
+1. Create virtual environemt by running following commands
+```
+py -m venv server
+source server/bin/activate
+```
+
+2. Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+3. Start the API server
+```
+uvicorn app.main:app --reload
+```
