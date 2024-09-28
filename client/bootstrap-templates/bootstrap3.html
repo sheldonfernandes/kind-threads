@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ECEFEC;
+            color: #181919;
+        }
+        .header {
+            background-color: #028371;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .stat-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        .stat-circle {
+            background-color: #fff;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #028371;
+            font-size: 20px;
+            border: 4px solid #028371;
+            position: relative;
+        }
+        .stat-circle img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .card h5 {
+            color: #181919;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #028371;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+        .floating-btn:hover {
+            background-color: #026b5e;
+        }
+        .expand-btns {
+            position: fixed;
+            bottom: 150px;
+            right: 20px;
+            display: none;
+        }
+        .expand-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #028371;
+            color: white;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .expand-btns.show {
+            display: block;
+        }
+        .form-container {
+            padding: 20px;
+            display: none;
+        }
+        .evaluate-btn {
+            background-color: #028371;
+            color: white;
+        }
+        .evaluate-result {
+            background-color: #f0f4f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        Donation Dashboard
+    </div>
+
+    <!-- Landing Page with Circular Dials -->
+    <div class="container stat-container">
+        <div class="stat-circle">
+            <img src="https://via.placeholder.com/80" alt="Steps">
+            <span>8,500</span>
+        </div>
+        <div class="stat-circle">
+            <img src="https://via.placeholder.com/80" alt="Sleep">
+            <span>7h 45m</span>
+        </div>
+        <div class="stat-circle">
+            <img src="https://via.placeholder.com/80" alt="Calories">
+            <span>2,300</span>
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="container">
+        <div class="card">
+            <h5>Card 1</h5>
+            <p>Detail about Card 1</p>
+        </div>
+        <div class="card">
+            <h5>Card 2</h5>
+            <p>Detail about Card 2</p>
+        </div>
+        <!-- More Cards up to 10 -->
+    </div>
+
+    <!-- Floating Add Button -->
+    <a href="#" class="floating-btn" id="mainButton">
+        <i class="bi bi-plus-lg"></i>
+    </a>
+
+    <!-- Expanded Buttons -->
+    <div class="expand-btns" id="expandedButtons">
+        <a href="#" class="expand-btn" id="btn1">
+            <i class="bi bi-calendar-event"></i>
+        </a>
+        <a href="#" class="expand-btn" id="btn2">
+            <i class="bi bi-camera"></i>
+        </a>
+        <a href="#" class="expand-btn" id="btn3">
+            <i class="bi bi-graph-up"></i>
+        </a>
+    </div>
+
+    <!-- Form for Adding Donation -->
+    <div class="container form-container" id="formPage">
+        <h4>Add Donation Item</h4>
+        <form>
+            <div class="mb-3">
+                <label for="itemType" class="form-label">Item Type</label>
+                <input type="text" class="form-control" id="itemType" placeholder="Enter item type">
+            </div>
+            <div class="mb-3">
+                <label for="itemCondition" class="form-label">Item Condition</label>
+                <input type="text" class="form-control" id="itemCondition" placeholder="Enter condition">
+            </div>
+            <div class="mb-3">
+                <label for="itemBrand" class="form-label">Brand</label>
+                <input type="text" class="form-control" id="itemBrand" placeholder="Enter brand">
+            </div>
+            <div class="mb-3">
+                <label for="itemImage" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" accept="image/*" id="itemImage" capture="camera">
+            </div>
+            <button type="button" class="btn evaluate-btn" id="evaluateButton">Evaluate</button>
+        </form>
+        <div class="evaluate-result" id="evaluateResult" style="display: none;">
+            <p>Analysis complete! The item is in good condition and ready for donation.</p>
+        </div>
+        <button type="button" class="btn btn-success mt-3">Proceed to Donation</button>
+    </div>
+
+    <!-- Bootstrap JS and Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script for Floating Button Expansion -->
+    <script>
+        document.getElementById('mainButton').addEventListener('click', function() {
+            const expandedButtons = document.getElementById('expandedButtons');
+            expandedButtons.classList.toggle('show');
+        });
+
+        // Event listener for expanded button to open form page
+        document.getElementById('btn1').addEventListener('click', function() {
+            document.querySelector('.stat-container').style.display = 'none';
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('formPage').style.display = 'block';
+        });
+
+        // Event listener for Evaluate button
+        document.getElementById('evaluateButton').addEventListener('click', function() {
+            document.getElementById('evaluateResult').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

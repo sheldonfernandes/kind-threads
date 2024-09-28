@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFit App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8e2; /* Light eco-friendly background */
+        }
+        .header {
+            background-color: #8fcf3c; /* Eco green color */
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .stat-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        .stat-circle {
+            background-color: #e8f5d8;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #5b7a33;
+            font-size: 20px;
+        }
+        .stat-circle h5 {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        .tiles-page {
+            padding: 20px;
+        }
+        .tile {
+            background-color: #e8f5d8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .tile h5 {
+            color: #5b7a33;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #8fcf3c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .floating-btn:hover {
+            background-color: #74a828;
+        }
+        .expand-btns {
+            position: fixed;
+            bottom: 150px;
+            right: 20px;
+            display: none;
+        }
+        .expand-btn {
+            width: 50px;
+            height: 50px;
+            background-color: #8fcf3c;
+            color: white;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .expand-btns.show {
+            display: block;
+        }
+        .form-container {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        EcoFit Dashboard
+    </div>
+
+    <!-- Landing Page with Circular Dials -->
+    <div class="container stat-container">
+        <div class="stat-circle">
+            <span>8,500</span>
+            <h5>Steps</h5>
+        </div>
+        <div class="stat-circle">
+            <span>6h 45m</span>
+            <h5>Sleep</h5>
+        </div>
+        <div class="stat-circle">
+            <span>1,800</span>
+            <h5>Calories</h5>
+        </div>
+    </div>
+
+    <!-- More Detailed Stats Page -->
+    <div class="container tiles-page">
+        <div class="tile">
+            <h5>Heart Rate</h5>
+            <p>Resting: 72 bpm</p>
+        </div>
+        <div class="tile">
+            <h5>Active Minutes</h5>
+            <p>Today's Activity: 35 mins</p>
+        </div>
+        <div class="tile">
+            <h5>Water Intake</h5>
+            <p>Today's intake: 2.5L</p>
+        </div>
+        <div class="tile">
+            <h5>Distance Walked</h5>
+            <p>Today's Distance: 5.8 km</p>
+        </div>
+    </div>
+
+    <!-- Floating Add Button -->
+    <a href="#" class="floating-btn" id="mainButton">
+        <i class="bi bi-plus-lg"></i>
+    </a>
+
+    <!-- Expanded Buttons -->
+    <div class="expand-btns" id="expandedButtons">
+        <a href="#" class="expand-btn" id="btn1">
+            <i class="bi bi-calendar-event"></i>
+        </a>
+        <a href="#" class="expand-btn" id="btn2">
+            <i class="bi bi-camera"></i>
+        </a>
+        <a href="#" class="expand-btn" id="btn3">
+            <i class="bi bi-graph-up"></i>
+        </a>
+    </div>
+
+    <!-- Form Page for Adding Event -->
+    <div class="container form-container" id="formPage" style="display: none;">
+        <h4>Add New Event</h4>
+        <form>
+            <div class="mb-3">
+                <label for="eventName" class="form-label">Event Name</label>
+                <input type="text" class="form-control" id="eventName" placeholder="Enter event name">
+            </div>
+            <div class="mb-3">
+                <label for="eventTime" class="form-label">Event Time</label>
+                <input type="datetime-local" class="form-control" id="eventTime">
+            </div>
+            <div class="mb-3">
+                <label for="eventImage" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" accept="image/*" id="eventImage" capture="camera">
+            </div>
+            <button type="submit" class="btn btn-success">Save Event</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script for Floating Button Expansion -->
+    <script>
+        document.getElementById('mainButton').addEventListener('click', function() {
+            const expandedButtons = document.getElementById('expandedButtons');
+            expandedButtons.classList.toggle('show');
+        });
+
+        // Event listener for the expanded button that opens the form page
+        document.getElementById('btn1').addEventListener('click', function() {
+            document.querySelector('.tiles-page').style.display = 'none';
+            document.getElementById('formPage').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
