@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 
 from app.routers import users
+from app.routers import inventory
 
 load_dotenv()
-
 app = FastAPI(
     title="Server APIs",
     description="APIs",
@@ -21,4 +21,5 @@ def healthz():
     return "OK"
 
 app.include_router(users.router)
+app.include_router(inventory.router)
 

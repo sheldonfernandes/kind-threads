@@ -20,6 +20,6 @@ class UserService:
                 'errorCode': None
             }
         except Exception as e:
-            print(f"Error in search service: {e}")
+            print(f"Error in user service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=404, detail=str(e))
