@@ -2,6 +2,8 @@ import os
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
+from app.routers import users
+
 load_dotenv()
 
 app = FastAPI(
@@ -17,3 +19,6 @@ app = FastAPI(
 )
 def healthz():
     return "OK"
+
+app.include_router(users.router)
+
