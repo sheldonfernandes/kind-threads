@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
-import { EndpointConst } from '../../src/constants/endpoints.constant'
+import { EndpointConst } from '@/src/constants/endpoints.constant'
 import './donation.css'
 export const Donation = () => {
   const router = useRouter();

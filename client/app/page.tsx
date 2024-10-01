@@ -1,5 +1,5 @@
-export const Home = () => {
-  return <div>Statistic coming soon</div>;
+export const Dashboard = () => {
+  return <div>Statistics Coming Soon</div>;
 };
 
-export default Home;
+export default Dashboard;

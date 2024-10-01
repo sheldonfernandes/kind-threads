@@ -44,7 +44,7 @@ export default function Dashboard({ children }: React.PropsWithChildren) {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="nav-link text-white">
+                  <a href={EndpointConst.LOGIN_PAGE} className="nav-link text-white">
                     Login
                   </a>
                 </li>
