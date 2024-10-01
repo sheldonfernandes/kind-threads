@@ -1,14 +1,19 @@
 "use client";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/src/store/Auth.store";
 import { AppUtil } from "@/src/utils/App.util";
 import { useState } from "react";
 import { Alert, Button, Container, Form, Stack } from "react-bootstrap";
+import { EndpointConst } from "@/src/constants/endpoints.constant";
 
 export const LoginComponent = () => {
+  const router = useRouter();
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [showAlert, setShowAlert] = useState(false);
-
+ 
   const onEmailChange = (event: any) => {
     setEmail(event.currentTarget.value);
   };
@@ -17,7 +22,9 @@ export const LoginComponent = () => {
   };
 
   const onLogin = () => {
-    if (email && new AppUtil().validateEmail(email)) {
+    if (email && new AppUtil().validateEmail(email)) {    
+      setAuthenticated(true);
+      router.push(EndpointConst.DONATION_PAGE);
     } else {
       setErrorMessage("Invalid Email Address");
       setShowAlert(true);

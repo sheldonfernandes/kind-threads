@@ -1,3 +1,5 @@
+"use client";
+
 export const Dashboard = () => {
   return <div>Statistics Coming Soon</div>;
 };

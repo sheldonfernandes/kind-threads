@@ -1,10 +1,18 @@
 "use client";
 
 import { EndpointConst } from "@/src/constants/endpoints.constant";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { Navbar, Container, Nav } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 export default function Dashboard({ children }: React.PropsWithChildren) {
+  const router = useRouter();
+  const onDashboardClick = () => {
+    router.push(EndpointConst.DASHBOARD_PAGE);
+  }; 
+  const onDonationClick = () => {
+    router.push(EndpointConst.DONATION_PAGE);
+  };
   return (
     <>
       {/* <Navbar bg="primary" data-bs-theme="dark">
@@ -28,25 +36,20 @@ export default function Dashboard({ children }: React.PropsWithChildren) {
 
               <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                 <li>
-                  <a
-                    href={EndpointConst.DASHBOARD_PAGE}
-                    className="nav-link text-white"
+                  <Button
+                    onClick={onDashboardClick}
+                    className="btn-success nav-link text-white"
                   >
                     Dashboard
-                  </a>
+                  </Button>
                 </li>
                 <li>
-                  <a
-                    href={EndpointConst.DONATION_PAGE}
-                    className="nav-link text-white"
+                  <Button
+                    onClick={onDonationClick}
+                    className="btn-success nav-link text-white"
                   >
                     Donation
-                  </a>
-                </li>
-                <li>
-                  <a href={EndpointConst.LOGIN_PAGE} className="nav-link text-white">
-                    Login
-                  </a>
+                  </Button>
                 </li>
               </ul>
             </div>
