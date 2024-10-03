@@ -2,12 +2,13 @@
 import { useRouter } from "next/navigation";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
-import { EndpointConst } from '@/src/constants/endpoints.constant'
-import './donation.css'
+import { EndpointConst } from "@/src/constants/endpoints.constant";
+import "./donation.css";
 export const Donation = () => {
   const router = useRouter();
   const data = [
     {
+      id: "1",
       category: "Donate",
       reason_for_category: "Gently Used",
       picked_up_date: "14/09/2024",
@@ -33,7 +34,11 @@ export const Donation = () => {
     <Container fluid>
       <Row>
         <Col>
-          <Button className="donationBtn my-3" variant="success" onClick={onDonationClick}>
+          <Button
+            className="donationBtn my-3"
+            variant="success"
+            onClick={onDonationClick}
+          >
             Donate Clothes
           </Button>
         </Col>
