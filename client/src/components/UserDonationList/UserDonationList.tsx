@@ -1,42 +1,40 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import BootstrapTable from "react-bootstrap-table-next";
-import { EndpointConst } from '@/src/constants/endpoints.constant'
-import './UserDonationList.css'
+
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { EndpointConst } from "@/src/constants/endpoints.constant";
 export const UserDonationList = () => {
   const router = useRouter();
-  const data = [
+
+  const userInventoryList = [
     {
-        inventory_id: "4234",
+      inventory_id: "4234",
       category: "Donate",
-      reason_for_category: "Gently Used",
+      reason_for_category: "Gently used item",
       picked_up_date: "14/09/2024",
       organization_name: "foundation",
       organization_received_status: "Received",
-    },
-  ];
-  const columns = [
-    { dataField: "category", text: "Category", sort: true },
-    { dataField: "reason_for_category", text: "Reason", sort: true },
-    { dataField: "picked_up_date", text: "Picked up date", sort: true },
-    { dataField: "organization_name", text: "Organization Name", sort: true },
-    {
-      dataField: "organization_received_status",
-      text: "Organization Received Status",
-      sort: true,
+      dropped_off_date: "19/09/2024",
     },
     {
-        dataField: "action",
-        text: "Action",
-        formatter: (cell:any, row:any, rowIndex:any) => showViewButton(cell, row, rowIndex),
-      },
+      inventory_id: "4234",
+      category: "Recycle",
+      reason_for_category: "Can be recycled",
+      picked_up_date: "14/09/2024",
+      organization_name: "foundation",
+      organization_received_status: "Received",
+      dropped_off_date: "19/09/2024",
+    },
+    {
+      inventory_id: "4234",
+      category: "Upcycle",
+      reason_for_category: "reinvent",
+      picked_up_date: "14/09/2024",
+      organization_name: "foundation",
+      organization_received_status: "Received",
+      dropped_off_date: "19/09/2024",
+    },
   ];
-  const showViewButton = (_cell:any, row:any, _rowIndex:any) => {
-    return (
-      <Button>View</Button>
-    );
-  };
   const onDonationClick = () => {
     router.push(EndpointConst.DONATION_DETAILS_PAGE);
   };
@@ -44,15 +42,30 @@ export const UserDonationList = () => {
     <Container fluid>
       <Row>
         <Col>
-          <Button className="donationBtn my-3" variant="success" onClick={onDonationClick}>
+          <Button
+            className="float-end my-3"
+            variant="success"
+            onClick={onDonationClick}
+          >
             Donate Clothes
           </Button>
         </Col>
       </Row>
       <Row>
-        <Col>
-          <BootstrapTable keyField="id" data={data} columns={columns} />
-        </Col>
+        {userInventoryList.map((item) => (
+          <Card className="my-3 mx-3" style={{ width: "18rem" }}>
+            <Card.Img variant="top" src="https://picsum.photos/536/354" />
+            <Card.Body>
+              <Card.Title>{item.category}</Card.Title>
+              <Card.Text>
+                {item.reason_for_category}
+                <br />
+                {item.organization_name} received your material on{" "}
+                {item.dropped_off_date}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        ))}
       </Row>
     </Container>
   );
