@@ -9,3 +9,8 @@ def get_user_profile(userid):
     db = get_database()
     data = db.get_collection('users').find_one({"user_id": userid}, {'_id': 0})
     return data
+
+def get_list_of_donation(userid):
+    db = get_database()
+    data = db.get_collection('inventory').find({"user_id": userid}, {'_id': 0}).to_list(100)
+    return data

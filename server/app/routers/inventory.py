@@ -14,3 +14,7 @@ router = APIRouter(
 @router.post("/scanimage")
 def fetch_image_data(scannedImageData: ScanImage):
     return InventoryService.fetch_image_data(scannedImageData)
+
+@router.get("/user/{userid}/listOfDonation")
+def fetch_user_profile(userid: str):
+    return InventoryService.fetch_list_of_donation(userid)
