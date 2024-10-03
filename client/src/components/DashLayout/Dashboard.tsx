@@ -13,6 +13,9 @@ export default function Dashboard({ children }: React.PropsWithChildren) {
   const onDonationClick = () => {
     router.push(EndpointConst.DONATION_PAGE);
   };
+  const onAdminClick = () =>{
+    router.push(EndpointConst.ADMIN_ORG_LIST_PAGE);
+  }
   return (
     <>
       {/* <Navbar bg="primary" data-bs-theme="dark">
@@ -49,6 +52,14 @@ export default function Dashboard({ children }: React.PropsWithChildren) {
                     className="btn-success nav-link text-white"
                   >
                     Donation
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    onClick={onAdminClick}
+                    className="btn-success nav-link text-white"
+                  >
+                    Admin
                   </Button>
                 </li>
               </ul>
