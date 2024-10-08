@@ -5,9 +5,11 @@ from fastapi import HTTPException
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema import HumanMessage, SystemMessage
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames
-from app.models import ScanImage
+from app.models.ScanImage import ScanImage
+from app.models.Inventory import InventoryModel, InventoryCreateModel, InventoryUpdateModel
 from app.utils import MongoUtil
 from langchain_ibm import WatsonxLLM
+from datetime import datetime, timedelta
 
 from app.utils.WatsonUtil import get_watsonxai_creds, system_prompt
 from app.utils.AppUtil import get_category
@@ -59,20 +61,65 @@ class InventoryService:
             raise HTTPException(status_code=404, detail=str(e))
 
     @staticmethod
-    def fetch_list_of_donation(userid):
-        try:
-            data = MongoUtil.get_list_of_donation(userid)
-            if data == None:
-                return {"success": False, "errorCode": "EKTU001",
-                        "errorMessage": "User doesn't exist"}
+    def create_inventory(inventoryCreateModel: InventoryCreateModel):
 
+        print(inventoryCreateModel)
+        inventory = InventoryModel()
+        inventory.user_id = inventoryCreateModel.user_id
+        inventory.user_name = inventoryCreateModel.user_name
+        inventory.material_image = inventoryCreateModel.material_image
+        inventory.fabric_type = inventoryCreateModel.fabric_type
+        inventory.pick_up_address = inventoryCreateModel.pick_up_address
+
+        # Below feilds wil be assigned by watsonxai based date recived from user
+        inventory.category = "donate" 
+        inventory.reason_for_category = "The fabric is still in good condition but no longer needed."
+        inventory.organization_id = "ORG012345"
+        inventory.organization_name = "Recyler Org Ltd"
+
+        # Default values while creating new inventory item
+        inventory.green_coins = 10
+        inventory.picked_up_date = str(datetime.now() + timedelta(days=2))
+        inventory.organization_received_status = "pending"
+
+        print(inventory.model_dump())
+        try:
+            response = MongoUtil.create_new_inventory(inventory.model_dump())
+            print(response)
+            return response
+        except Exception as e:
+            print(f"Error in inventory service: {e}")
+            print(traceback.format_exc())
+            raise HTTPException(status_code=500, detail=str(e))
+        
+    @staticmethod
+    def update_inventory(inventory_id: str, inventoryUpdateModel: InventoryUpdateModel):
+
+        current_date: datetime = datetime.now()
+        inventoryUpdateModel.picked_up_date = str(current_date)
+        inventoryUpdateModel.drop_off_date = str(current_date + timedelta(days=2))
+        try:
+            response = MongoUtil.update_inventory(inventory_id, inventoryUpdateModel.model_dump())
+            return response
+        except Exception as e:
+            print(f"Error in inventory service: {e}")
+            print(traceback.format_exc())
+            raise HTTPException(status_code=500, detail=str(e))
+        
+    @staticmethod
+    def get_inventory_list_by_status(org_received_status):
+        try:
+            inventory_list = MongoUtil.list_inventory_by_status(org_received_status)
+            if inventory_list == None:
+                return {"success": False, "errorCode": "EKTU002",
+                        "errorMessage": "Inventory not found with org_received_status: {org_received_status}"}
             return {
                 'success': True,
-                'user_donation_list': data,
+                'inventory_list': inventory_list,
                 'errorMessage': None,
                 'errorCode': None
             }
         except Exception as e:
-            print(f"Error in user service: {e}")
+            print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
-            raise HTTPException(status_code=404, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e))

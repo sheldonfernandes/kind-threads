@@ -24,6 +24,25 @@ class UserService:
             print(f"Error in user service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=404, detail=str(e))
+
+    @staticmethod
+    def get_inventory_list_by_user_id(user_id):
+        try:
+            inventory_list = MongoUtil.list_inventory_by_user_id(user_id)
+            if inventory_list == None:
+                return {"success": False, "errorCode": "EKTU001",
+                        "errorMessage": "User not found with userid: {user_id}"}
+            
+            return {
+                'success': True,
+                'inventory_list': inventory_list,
+                'errorMessage': None,
+                'errorCode': None
+            }
+        except Exception as e:
+            print(f"Error in user service: {e}")
+            print(traceback.format_exc())
+            raise HTTPException(status_code=404, detail=str(e))
         
     @staticmethod
     def validate_user(userLoginParams: UserLoginParams):
@@ -39,9 +58,10 @@ class UserService:
                 'errorCode': None
             }
         except Exception as e:
-            print(f"Error in user service: {e}")
+            print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
-            raise HTTPException(status_code=404, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e))
+            
         
     @staticmethod
     def register_user(registerUserParams: RegisterUserParams):

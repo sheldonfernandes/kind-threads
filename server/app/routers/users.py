@@ -13,6 +13,10 @@ router = APIRouter(
 def fetch_user_profile(userid: str):
     return UserService.fetch_user_profile(userid)
 
+@router.get("/{userid}/inventory_list")
+def get_inventory_list(userid: str):
+    return UserService.get_inventory_list_by_user_id(userid)
+
 @router.post("/login")
 def validate_user(userLoginParams: UserLoginParams):
     return UserService.validate_user(userLoginParams)
