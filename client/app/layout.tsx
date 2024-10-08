@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Dashboard from "../src/components/DashLayout/Dashboard";
+import AppHeader from "../src/components/AppHeader/AppHeader";
+import ReactQueryClientProvider from "@/src/components/ReactQueryClientProvider ";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -26,12 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Dashboard>{children}</Dashboard>
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <AppHeader>{children}</AppHeader>
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

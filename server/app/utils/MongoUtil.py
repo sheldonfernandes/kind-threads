@@ -14,3 +14,8 @@ def get_list_of_donation(userid):
     db = get_database()
     data = db.get_collection('inventory').find({"user_id": userid}, {'_id': 0}).to_list(100)
     return data
+
+def get_organization(category):
+    db = get_database()
+    data = db.get_collection('organizations').find_one({"category": category}, {'_id': 0})
+    return data
