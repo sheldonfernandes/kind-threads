@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from app.routers import users
 from app.routers import inventory
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 app = FastAPI(
@@ -20,6 +21,13 @@ app = FastAPI(
 def healthz():
     return "OK"
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(users.router)
 app.include_router(inventory.router)
-

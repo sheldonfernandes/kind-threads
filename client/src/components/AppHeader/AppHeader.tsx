@@ -5,17 +5,14 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "react-bootstrap";
 
-export default function Dashboard({ children }: React.PropsWithChildren) {
+export default function AppHeader({ children }: React.PropsWithChildren) {
   const router = useRouter();
   const onDashboardClick = () => {
     router.push(EndpointConst.DASHBOARD_PAGE);
   }; 
-  const onDonationClick = () => {
-    router.push(EndpointConst.DONATION_PAGE);
+  const onMarketplaceClick = () => {
+    router.push(EndpointConst.MARKETPLACE_PAGE);
   };
-  const onAdminClick = () =>{
-    router.push(EndpointConst.ADMIN_ORG_LIST_PAGE);
-  }
   return (
     <>
       {/* <Navbar bg="primary" data-bs-theme="dark">
@@ -48,20 +45,13 @@ export default function Dashboard({ children }: React.PropsWithChildren) {
                 </li>
                 <li>
                   <Button
-                    onClick={onDonationClick}
+                    onClick={onMarketplaceClick}
                     className="btn-success nav-link text-white"
                   >
-                    Donation
+                    Marketplace
                   </Button>
                 </li>
-                <li>
-                  <Button
-                    onClick={onAdminClick}
-                    className="btn-success nav-link text-white"
-                  >
-                    Admin
-                  </Button>
-                </li>
+               
               </ul>
             </div>
           </div>

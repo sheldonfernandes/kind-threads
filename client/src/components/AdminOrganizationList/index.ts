@@ -1,1 +1,0 @@
-export {AdminOrganizationList as default} from './AdminOrganizationList'
