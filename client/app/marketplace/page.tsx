@@ -1,18 +1,14 @@
 "use client";
 import InventoryItem from "@/src/components/InventoryItem";
+import withAuth from "@/src/components/ProtectedRoute";
 import UserDonationList from "@/src/components/UserDonationList/UserDonationList";
-import { QueryKey } from "@/src/constants/query-key.constant";
-import { InventoryService } from "@/src/services/inventory.service";
-import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Alert, Container, Tab, Tabs } from "react-bootstrap";
+import { Container, Tab, Tabs } from "react-bootstrap";
 export const Marketplace = () => {
   const [key, setKey] = useState("marketplace");
-
-  const { data: userDonationInventoryListData } = useQuery({
-    queryKey: [QueryKey.USER_DONATION_INVENTORY_LIST],
-    queryFn: () => InventoryService.getUserDonationInventoryList("1"),
-  });
+  const router = useRouter();
+ 
 
   const inventoryPendingList = [
     {
@@ -43,6 +39,7 @@ export const Marketplace = () => {
       dropped_off_date: "19/09/2024",
     },
   ];
+ 
   return (
     <Container>
       <Tabs
@@ -55,14 +52,7 @@ export const Marketplace = () => {
           <InventoryItem />
         </Tab>
         <Tab eventKey="my_donation" title="My Donation">
-          {userDonationInventoryListData?.user_donation_list &&
-          userDonationInventoryListData.user_donation_list.length ? (
-            <UserDonationList />
-          ) : (
-            <Alert key="info" variant="info">
-              No Records
-            </Alert>
-          )}
+        <UserDonationList />
         </Tab>
         <Tab eventKey="picked_up" title="Picked Up">
           <InventoryItem />
@@ -75,4 +65,4 @@ export const Marketplace = () => {
   );
 };
 
-export default Marketplace;
+export default withAuth(Marketplace);

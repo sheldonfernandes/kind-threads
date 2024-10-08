@@ -1,0 +1,1 @@
+export {withAuth as default} from './ProtectedRoute'

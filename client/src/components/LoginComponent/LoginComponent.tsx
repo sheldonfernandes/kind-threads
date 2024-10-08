@@ -5,14 +5,16 @@ import { AppUtil } from "@/src/utils/App.util";
 import { useState } from "react";
 import { Alert, Button, Container, Form, Stack } from "react-bootstrap";
 import { EndpointConst } from "@/src/constants/endpoints.constant";
+import { useAuthUser } from "@/src/hooks/useAuthUser";
 
 export const LoginComponent = () => {
   const router = useRouter();
-  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const {setAuthenticated,setUserData} = useAuthStore();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [showAlert, setShowAlert] = useState(false);
+  const {mutate, data: loginData} = useAuthUser();
  
   const onEmailChange = (event: any) => {
     setEmail(event.currentTarget.value);
@@ -22,22 +24,35 @@ export const LoginComponent = () => {
   };
 
   const onLogin = () => {
-    if (email && new AppUtil().validateEmail(email)) {    
-      setAuthenticated(true);
-      router.push(EndpointConst.DONATION_PAGE);
+    if (email && new AppUtil().validateEmail(email) && password) { 
+      mutate({
+        email:email,
+        password:Buffer.from(password).toString('base64')
+      })
     } else {
-      setErrorMessage("Invalid Email Address");
+      setErrorMessage("Invalid Email Address or password");
       setShowAlert(true);
     }
-  };
+  }; 
 
-  const onCloseAlert = () => setShowAlert(false);
+  const onCloseAlert = () => {
+    setShowAlert(false);
+    setErrorMessage(undefined)
+  }
+
+  console.log(loginData)
+
+  if(loginData && loginData.success && loginData.user_data){
+    setAuthenticated(true);
+    setUserData(loginData.user_data)
+    router.push(EndpointConst.MARKETPLACE_PAGE);
+  }
 
   return (
     <Container>
-      {showAlert && (
+      {showAlert || (loginData && !loginData.success && loginData.errorMessage) && (
         <Alert key="danger" variant="danger" dismissible onClose={onCloseAlert}>
-          {errorMessage}
+          {(loginData && !loginData.success && loginData.errorMessage) ? loginData.errorMessage : errorMessage}
         </Alert>
       )}
       <Stack gap={2} className="col-md-5 mx-auto">

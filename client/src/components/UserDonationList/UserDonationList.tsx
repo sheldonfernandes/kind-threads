@@ -1,43 +1,25 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Row } from "react-bootstrap";
 import { EndpointConst } from "@/src/constants/endpoints.constant";
+import { QueryKey } from "@/src/constants/query-key.constant";
+import { InventoryService } from "@/src/services/inventory.service";
+import { useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "@/src/store/Auth.store";
 export const UserDonationList = () => {
   const router = useRouter();
+  const { userData } = useAuthStore();
+  console.log(userData);
+  const { data: userDonationInventoryListData } = useQuery({
+    queryKey: [QueryKey.USER_DONATION_INVENTORY_LIST],
+    queryFn: () => InventoryService.getUserDonationInventoryList("1"),
+  });
 
-  const userInventoryList = [
-    {
-      inventory_id: "4234",
-      category: "Donate",
-      reason_for_category: "Gently used item",
-      picked_up_date: "14/09/2024",
-      organization_name: "foundation",
-      organization_received_status: "Received",
-      dropped_off_date: "19/09/2024",
-    },
-    {
-      inventory_id: "4234",
-      category: "Recycle",
-      reason_for_category: "Can be recycled",
-      picked_up_date: "14/09/2024",
-      organization_name: "foundation",
-      organization_received_status: "Received",
-      dropped_off_date: "19/09/2024",
-    },
-    {
-      inventory_id: "4234",
-      category: "Upcycle",
-      reason_for_category: "reinvent",
-      picked_up_date: "14/09/2024",
-      organization_name: "foundation",
-      organization_received_status: "Received",
-      dropped_off_date: "19/09/2024",
-    },
-  ];
   const onDonationClick = () => {
     router.push(EndpointConst.DONATION_DETAILS_PAGE);
   };
+
   return (
     <Container fluid>
       <Row>
@@ -52,20 +34,26 @@ export const UserDonationList = () => {
         </Col>
       </Row>
       <Row>
-        {userInventoryList.map((item) => (
-          <Card className="my-3 mx-3" style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="https://picsum.photos/536/354" />
-            <Card.Body>
-              <Card.Title>{item.category}</Card.Title>
-              <Card.Text>
-                {item.reason_for_category}
-                <br />
-                {item.organization_name} received your material on{" "}
-                {item.dropped_off_date}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        ))}
+        {userDonationInventoryListData &&
+        userDonationInventoryListData.user_donation_list.length ? (
+          userDonationInventoryListData?.user_donation_list.map((item) => (
+            <Card className="my-3 mx-3" style={{ width: "18rem" }}>
+              <Card.Img variant="top" src="https://picsum.photos/536/354" />
+              <Card.Body>
+                <Card.Title>Hi</Card.Title>
+                <Card.Text>
+                  Hi
+                  <br />
+                  Hello received your material on yellow
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          ))
+        ) : (
+          <Alert key="info" variant="info">
+            No Records
+          </Alert>
+        )}
       </Row>
     </Container>
   );
