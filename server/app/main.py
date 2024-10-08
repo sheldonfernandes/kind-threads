@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from app.routers import users
 from app.routers import inventory
+from app.routers import collector
 
 load_dotenv()
 app = FastAPI(
@@ -20,6 +21,7 @@ app = FastAPI(
 def healthz():
     return "OK"
 
-app.include_router(users.router)
-app.include_router(inventory.router)
+app.include_router(users.router, tags=["User Management"])
+app.include_router(inventory.router, tags=["Inventory Management"])
+app.include_router(collector.router, tags=["Collector Management"])
 

@@ -4,6 +4,7 @@ from fastapi import APIRouter
 
 from app.services.InventoryService import InventoryService
 from app.models.ScanImage import ScanImage
+from app.models.Inventory import InventoryCreateModel, InventoryUpdateModel
 
 load_dotenv()
 router = APIRouter(
@@ -15,6 +16,15 @@ router = APIRouter(
 def fetch_image_data(scannedImageData: ScanImage):
     return InventoryService.fetch_image_data(scannedImageData)
 
-@router.get("/user/{userid}/listOfDonation")
-def fetch_user_profile(userid: str):
-    return InventoryService.fetch_list_of_donation(userid)
+@router.get("/list_inventory/{org_received_status}")
+def get_inventory_list(org_received_status: str):
+    return InventoryService.get_inventory_list_by_status(org_received_status)
+
+@router.post("/create")
+def create_inventory(inventoryCreateModel: InventoryCreateModel):
+    return InventoryService.create_inventory(inventoryCreateModel)
+
+@router.put("/{inventory_id}/update")
+def update_inventory(inventory_id: str, inventoryUpdateModel: InventoryUpdateModel):
+    return InventoryService.update_inventory(inventory_id, inventoryUpdateModel)
+
