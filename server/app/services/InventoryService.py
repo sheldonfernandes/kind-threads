@@ -1,3 +1,4 @@
+import re
 import traceback
 
 from fastapi import HTTPException
@@ -11,6 +12,7 @@ from langchain_ibm import WatsonxLLM
 from datetime import datetime, timedelta
 
 from app.utils.WatsonUtil import get_watsonxai_creds, system_prompt
+from app.utils.AppUtil import get_category
 
 creds = get_watsonxai_creds()
 params = {
@@ -31,8 +33,6 @@ watsonx_llm = WatsonxLLM(
     params=params,
     streaming=False,
 )
-
-
 class InventoryService:
     @staticmethod
     def fetch_image_data(scannedImageData: ScanImage):
@@ -43,8 +43,8 @@ class InventoryService:
                     SystemMessage(content=system_prompt()),
                     HumanMessage(content=[
                         {"type": "image_url",
-                         "image_url": f"data:image/jpeg;base64,{scannedImageData.image}"},
-                        {"type": "text", "text": f"What is the most suitable action for the fabric type {scannedImageData.fabric_type} shown in the image: donate, recycle, or upcycle? Please explain your reasoning for the choice you make."}
+                         "image_url": f"data:{scannedImageData.image_format};base64,{scannedImageData.base64image}"},
+                        {"type": "text", "text": f"Select either donate or recycle or upcycle for the fabric type {scannedImageData.fabric_type} shown in the image?"}
                     ])
                 ]
             )
@@ -52,14 +52,14 @@ class InventoryService:
             chain = chat_prompt_template | watsonx_llm
 
             response = chain.invoke({})
-
-            print(response)
-            return {"hi": response}
+            category = get_category(response)
+            organization_data = MongoUtil.get_organization(category.lower())
+            return {"category": category, "reason": response,**organization_data}
         except Exception as e:
             print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=404, detail=str(e))
-        
+
     @staticmethod
     def create_inventory(inventoryCreateModel: InventoryCreateModel):
 
