@@ -7,7 +7,7 @@ class UserLoginParams(BaseModel):
 class RegisterUserParams(BaseModel):
     user_name: str
     state: str
-    country: str
+    address: str
     contact: str
     email_address: str
     password:  str

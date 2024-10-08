@@ -2,7 +2,7 @@ export type UserData = {
   user_id: string;
   user_name: string;
   state: string;
-  country: string;
+  address: string;
   contact: string;
   email_address: string;
   total_green_coins: number;
@@ -19,7 +19,7 @@ export type LoginResponse = {
     user_id: string;
     user_name: string;
     state: string;
-    country: string;
+    address: string;
     contact: string;
     email_address: string;
     total_green_coins: number;
