@@ -95,7 +95,7 @@ export const UserDonationList = () => {
                       <Card.Title>{item.category}</Card.Title>
                       <Card.Text>
                         <p>
-                          Status: {item.organization_received_status}
+                          Status: {item.organization_received_status===OrganizationStatusEnum.PENDING?'Pending':(item.organization_received_status===OrganizationStatusEnum.PICKED_UP?'Item Picked Up':'Received')}
                           <br />
                           Pickup date:{" "}
                           {new AppUtil().getDate(item.picked_up_date)}
@@ -104,9 +104,9 @@ export const UserDonationList = () => {
                         </p>
                       </Card.Text>
 
-                      <Button onClick={() => onDetailsClick(item)}>
+                      {item.organization_received_status===OrganizationStatusEnum.PENDING && <Button onClick={() => onDetailsClick(item)}>
                         Pick up
-                      </Button>
+                      </Button> }
                     </Card.Body>
                   </Card>
                 </Col>

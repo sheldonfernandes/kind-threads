@@ -16,6 +16,7 @@ export type CreateInventoryData = {
 
 export type InventoryData = {
   _id: string;
+  inventory_id:string;
   user_id: string;
   user_name: string;
   material_image: string;
@@ -38,7 +39,8 @@ export type InventoryData = {
 
 export enum OrganizationStatusEnum  {
   PENDING='pending',
-  RECEIVED="received"
+  PICKED_UP= 'picked_up',
+  RECEIVED='received'
 }
 
 export type InventoryDetailModal = {
@@ -48,4 +50,12 @@ export type InventoryDetailModal = {
   pick_up_address?: string;
   organization_name?: string;  
   organization_address?: string;  
+  inventory_id?:string
+}
+
+export type UpdateInventory = {
+  inventory_id:string,
+  collector_id: string,
+  collector_name: string,
+  organization_received_status: string
 }

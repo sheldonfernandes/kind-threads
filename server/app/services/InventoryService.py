@@ -1,5 +1,6 @@
 import re
 import traceback
+import uuid
 
 from fastapi import HTTPException
 from langchain_core.prompts import ChatPromptTemplate
@@ -39,6 +40,7 @@ class InventoryService:
 
         print(inventoryCreateModel)
         inventory = InventoryModel()
+        inventory.inventory_id = uuid.uuid4().hex
         inventory.user_id = inventoryCreateModel.user_id
         inventory.user_name = inventoryCreateModel.user_name
         inventory.material_image = inventoryCreateModel.material_image
@@ -91,8 +93,11 @@ class InventoryService:
     def update_inventory(inventory_id: str, inventoryUpdateModel: InventoryUpdateModel):
 
         current_date: datetime = datetime.now()
-        inventoryUpdateModel.picked_up_date = str(current_date)
-        inventoryUpdateModel.drop_off_date = str(current_date + timedelta(days=2))
+        if (inventoryUpdateModel.organization_received_status == 'picked_up'):
+            inventoryUpdateModel.picked_up_date = str(current_date)
+            inventoryUpdateModel.drop_off_date = str(current_date + timedelta(days=2))
+        else:
+             inventoryUpdateModel.drop_off_date = str(current_date)
         try:
             response = MongoUtil.update_inventory(inventory_id, inventoryUpdateModel.model_dump())
             return response

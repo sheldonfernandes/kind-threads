@@ -45,9 +45,8 @@ def create_new_inventory(inventory_data):
 def update_inventory(inventory_id, inventory_update_data):
     db = get_database()
     collection = db['inventory']
-    updated_inventory = collection.update_one({'_id': ObjectId(inventory_id)}, {"$set": inventory_update_data})
-    updated_inventory = collection.find_one({'_id': ObjectId(inventory_id)})
-    updated_inventory['_id'] = str(updated_inventory['_id'])
+    updated_inventory = collection.update_one({'inventory_id': inventory_id}, {"$set": inventory_update_data})
+    updated_inventory = collection.find_one({'inventory_id': inventory_id},{'_id': 0})
     return updated_inventory
 
 def validate_user(userLoginParams: UserLoginParams):

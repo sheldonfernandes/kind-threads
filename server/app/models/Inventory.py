@@ -4,6 +4,7 @@ from datetime import datetime
 from bson import ObjectId
 
 class InventoryModel(BaseModel):
+    inventory_id: Optional[str] = ""
     user_id: Optional[str] = ""
     user_name: Optional[str] = ""
     material_image: Optional[str] = ""

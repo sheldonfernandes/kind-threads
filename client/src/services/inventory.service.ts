@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiEndpoint } from "../constants/api-endpoints.constant";
 import { AppConst } from "../constants/app.constant";
-import { CreateInventoryData, InventoryData, InventoryListType } from "../types/inventory.type";
+import { CreateInventoryData, InventoryData, InventoryListType, UpdateInventory } from "../types/inventory.type";
 
 export const InventoryService = {
   getUserDonationInventoryList: async (
@@ -37,6 +37,19 @@ export const InventoryService = {
       baseURL: apiEndpoint.API_BASE_URL,
       timeout: AppConst.API_TIMEOUT,
       method: "GET",
+    }).then((res) => res.data);
+  },
+
+  updateStatus: async (
+    updateInventory:UpdateInventory
+  ): Promise<InventoryListType> => {
+    const apiEndpoint = new ApiEndpoint();
+    return axios({
+      url: apiEndpoint.UPDATE_STATUS_API(updateInventory.inventory_id),
+      baseURL: apiEndpoint.API_BASE_URL,
+      timeout: AppConst.API_TIMEOUT,
+      method: "PUT",
+      data:updateInventory
     }).then((res) => res.data);
   },
 };

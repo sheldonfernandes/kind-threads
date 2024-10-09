@@ -4,6 +4,7 @@ export class ApiEndpoint {
   CREATE_INVENTORY_API: string;
   LOGIN_API :string;
   MARKETPLACE_API:string;
+  UPDATE_STATUS_API :(inventory_id:string) =>string
 
   constructor() {
     this.API_BASE_URL = process.env.NEXT_PUBLIC_API_ROOT_PATH || "";
@@ -12,5 +13,6 @@ export class ApiEndpoint {
     this.CREATE_INVENTORY_API = "/inventory/create";
     this.LOGIN_API = "/user/login"
     this.MARKETPLACE_API = "/inventory/list_inventory/pending"
+    this. UPDATE_STATUS_API = (inventory_id:string) => `/inventory/${inventory_id}/update`
   }
 }
