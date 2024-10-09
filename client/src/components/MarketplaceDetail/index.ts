@@ -1,0 +1,1 @@
+export {MarketplaceDetail as default} from './MarketplaceDetail'

@@ -1,9 +1,10 @@
-export type UserDonationInventoryListType = {
+export type InventoryListType = {
   success: boolean;
-  user_donation_list: [];
+  inventory_list: InventoryData[];
   errorMessage: string;
   errorCode: string;
 };
+
 
 export type CreateInventoryData = {
   user_id: string;
@@ -32,3 +33,17 @@ export type InventoryData = {
   collector_name: string;
   drop_off_date: string;
 };
+
+
+export enum OrganizationStatusEnum  {
+  PENDING='pending',
+  RECEIVED="received"
+}
+
+export type InventoryDetailModal = {
+  showModal:boolean;
+  category?: string;
+  picked_up_date?: string | null;
+  pick_up_address?: string;
+  organization_name?: string;  
+}

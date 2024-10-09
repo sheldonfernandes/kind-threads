@@ -40,8 +40,6 @@ export const LoginComponent = () => {
     setErrorMessage(undefined)
   }
 
-  console.log(loginData)
-
   if(loginData && loginData.success && loginData.user_data){
     setAuthenticated(true);
     setUserData(loginData.user_data)
