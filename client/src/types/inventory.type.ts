@@ -1,6 +1,6 @@
 export type UserDonationInventoryListType = {
   success: boolean;
-  user_donation_list: [];
+  inventory_list: InventoryData[];
   errorMessage: string;
   errorCode: string;
 };

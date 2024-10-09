@@ -7,7 +7,7 @@ export class ApiEndpoint {
   constructor() {
     this.API_BASE_URL = process.env.NEXT_PUBLIC_API_ROOT_PATH || "";
     this.USER_DONATION_INVENTORY_LIST_API = (userid: string) =>
-      `/inventory/user/${userid}/listOfDonation`;
+      `/user/${userid}/inventory_list`;
     this.CREATE_INVENTORY_API = "/inventory/create";
     this.LOGIN_API = "/user/login"
   }

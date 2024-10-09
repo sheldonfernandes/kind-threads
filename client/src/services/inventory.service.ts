@@ -5,11 +5,11 @@ import { CreateInventoryData, InventoryData, UserDonationInventoryListType } fro
 
 export const InventoryService = {
   getUserDonationInventoryList: async (
-    userid: string
+    userid: string | undefined
   ): Promise<UserDonationInventoryListType> => {
     const apiEndpoint = new ApiEndpoint();
     return axios({
-      url: apiEndpoint.USER_DONATION_INVENTORY_LIST_API(userid),
+      url: apiEndpoint.USER_DONATION_INVENTORY_LIST_API(userid || ""),
       baseURL: apiEndpoint.API_BASE_URL,
       timeout: AppConst.API_TIMEOUT,
       method: "GET",

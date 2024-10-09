@@ -10,10 +10,9 @@ import { useAuthStore } from "@/src/store/Auth.store";
 export const UserDonationList = () => {
   const router = useRouter();
   const { userData } = useAuthStore();
-  console.log(userData);
   const { data: userDonationInventoryListData } = useQuery({
     queryKey: [QueryKey.USER_DONATION_INVENTORY_LIST],
-    queryFn: () => InventoryService.getUserDonationInventoryList("1"),
+    queryFn: () => InventoryService.getUserDonationInventoryList(userData?.user_id),
   });
 
   const onDonationClick = () => {
@@ -35,12 +34,12 @@ export const UserDonationList = () => {
       </Row>
       <Row>
         {userDonationInventoryListData &&
-        userDonationInventoryListData.user_donation_list.length ? (
-          userDonationInventoryListData?.user_donation_list.map((item) => (
+        userDonationInventoryListData.inventory_list.length ? (
+          userDonationInventoryListData?.inventory_list.map((item) => (
             <Card className="my-3 mx-3" style={{ width: "18rem" }}>
               <Card.Img variant="top" src="https://picsum.photos/536/354" />
               <Card.Body>
-                <Card.Title>Hi</Card.Title>
+                <Card.Title>{item.category}</Card.Title>
                 <Card.Text>
                   Hi
                   <br />
