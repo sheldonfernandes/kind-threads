@@ -20,7 +20,7 @@ import {
   InventoryDetailModal,
   OrganizationStatusEnum,
 } from "@/src/types/inventory.type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppUtil } from "@/src/utils/App.util";
 import AppLoader from "../AppLoader";
 export const UserDonationList = () => {
@@ -32,11 +32,16 @@ export const UserDonationList = () => {
   const {
     data: userDonationInventoryListData,
     isPending: isUserInventoryListPending,
+    refetch: refetchUserDonationInventoryList
   } = useQuery({
     queryKey: [QueryKey.USER_DONATION_INVENTORY_LIST],
     queryFn: () =>
       InventoryService.getUserDonationInventoryList(userData?.user_id),
   });
+
+  useEffect(()=>{
+    refetchUserDonationInventoryList()
+  },[])
 
   const onDonationClick = () => {
     router.push(EndpointConst.DONATION_DETAILS_PAGE);

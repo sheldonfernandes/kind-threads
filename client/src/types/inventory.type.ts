@@ -1,9 +1,10 @@
-export type UserDonationInventoryListType = {
+export type InventoryListType = {
   success: boolean;
   inventory_list: InventoryData[];
   errorMessage: string;
   errorCode: string;
 };
+
 
 export type CreateInventoryData = {
   user_id: string;

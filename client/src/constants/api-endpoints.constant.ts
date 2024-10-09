@@ -3,6 +3,7 @@ export class ApiEndpoint {
   USER_DONATION_INVENTORY_LIST_API: (userid: string) => string;
   CREATE_INVENTORY_API: string;
   LOGIN_API :string;
+  MARKETPLACE_API:string;
 
   constructor() {
     this.API_BASE_URL = process.env.NEXT_PUBLIC_API_ROOT_PATH || "";
@@ -10,5 +11,6 @@ export class ApiEndpoint {
       `/user/${userid}/inventory_list`;
     this.CREATE_INVENTORY_API = "/inventory/create";
     this.LOGIN_API = "/user/login"
+    this.MARKETPLACE_API = "/inventory/list_inventory/pending"
   }
 }
