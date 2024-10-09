@@ -28,6 +28,7 @@ export type InventoryData = {
   pick_up_address: string;
   organization_id: string;
   organization_name: string;
+  organization_address:string;
   organization_received_status: string;
   collector_id: string;
   collector_name: string;
@@ -46,4 +47,5 @@ export type InventoryDetailModal = {
   picked_up_date?: string | null;
   pick_up_address?: string;
   organization_name?: string;  
+  organization_address?: string;  
 }

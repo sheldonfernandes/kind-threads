@@ -43,6 +43,7 @@ export const MarketplaceDetail = () => {
         showModal: true,
         category: item.category,
         organization_name: item.organization_name,
+        organization_address:item.organization_address,
         pick_up_address: item.pick_up_address,
         picked_up_date: item.picked_up_date
           ? new AppUtil().getDate(item.picked_up_date)
@@ -114,6 +115,10 @@ export const MarketplaceDetail = () => {
             <Row>
               <Col>Organization Name</Col>
               <Col>{detailModal?.organization_name}</Col>
+            </Row>
+            <Row>
+              <Col>Organization Address</Col>
+              <Col>{detailModal?.organization_address}</Col>
             </Row>
           </Modal.Body>
           <Modal.Footer>

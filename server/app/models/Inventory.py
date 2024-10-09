@@ -15,6 +15,7 @@ class InventoryModel(BaseModel):
     pick_up_address: Optional[str] = ""
     organization_id: Optional[str] = ""
     organization_name: Optional[str] = ""
+    organization_address: Optional[str] = ""
     organization_received_status: Optional[str] = "" #= Field(default="pending", regex="pending|picked_up|received")
     collector_id: Optional[str] = ""
     collector_name: Optional[str] = ""

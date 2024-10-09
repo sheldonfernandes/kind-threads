@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Container, Form, Modal, Row } from "react-bootstrap";
+import { Alert, Button, Container, Form, Modal, Row } from "react-bootstrap";
 import UploadFiles from "./UploadFiles";
 import { useCreateInventory } from "@/src/hooks/useCreateInventory";
 import { EndpointConst } from "@/src/constants/endpoints.constant";
@@ -19,7 +19,7 @@ export const DonateDetails = () => {
     userData?.address || ""
   );
 
-  const { mutate, data: inventoryData, isPending } = useCreateInventory();
+  const { mutate, data: inventoryData, isPending, isError } = useCreateInventory();
   const handleClose = () => {
     router.push(EndpointConst.MARKETPLACE_PAGE);
   };
@@ -45,8 +45,14 @@ export const DonateDetails = () => {
       pick_up_address: pickUpAddress,
     });
   };
+
   return (
     <Container className="my-3">
+      {
+        isError && <Alert key="danger" variant="danger" dismissible >
+        Failed to submit the response! Please try after sometime
+      </Alert>
+      }
       <h4>Enter donate details</h4>
       <Form>
         <Form.Group className="my-3" controlId="fabricType">

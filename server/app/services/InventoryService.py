@@ -35,32 +35,6 @@ watsonx_llm = WatsonxLLM(
 )
 class InventoryService:
     @staticmethod
-    def fetch_image_data(scannedImageData: ScanImage):
-        try:
-
-            chat_prompt_template = ChatPromptTemplate.from_messages(
-                messages=[
-                    SystemMessage(content=system_prompt()),
-                    HumanMessage(content=[
-                        {"type": "image_url",
-                         "image_url": f"data:{scannedImageData.image_format};base64,{scannedImageData.base64image}"},
-                        {"type": "text", "text": f"Select either donate or recycle or upcycle for the fabric type {scannedImageData.fabric_type} shown in the image?"}
-                    ])
-                ]
-            )
-
-            chain = chat_prompt_template | watsonx_llm
-
-            response = chain.invoke({})
-            category = get_category(response)
-            organization_data = MongoUtil.get_organization(category.lower())
-            return {"category": category, "reason": response,**organization_data}
-        except Exception as e:
-            print(f"Error in inventory service: {e}")
-            print(traceback.format_exc())
-            raise HTTPException(status_code=404, detail=str(e))
-
-    @staticmethod
     def create_inventory(inventoryCreateModel: InventoryCreateModel):
 
         print(inventoryCreateModel)
@@ -72,10 +46,31 @@ class InventoryService:
         inventory.pick_up_address = inventoryCreateModel.pick_up_address
 
         # Below feilds wil be assigned by watsonxai based date recived from user
-        inventory.category = "donate" 
-        inventory.reason_for_category = "The fabric is still in good condition but no longer needed."
-        inventory.organization_id = "ORG012345"
-        inventory.organization_name = "Recyler Org Ltd"
+
+
+        chat_prompt_template = ChatPromptTemplate.from_messages(
+                messages=[
+                    SystemMessage(content=system_prompt()),
+                    HumanMessage(content=[
+                        {"type": "image_url",
+                         "image_url": {inventoryCreateModel.material_image}},
+                        {"type": "text", "text": f"Select either donate or recycle or upcycle for the fabric type {inventoryCreateModel.fabric_type} shown in the image?"}
+                    ])
+                ]
+            )
+
+        chain = chat_prompt_template | watsonx_llm
+
+        category_reason = chain.invoke({})
+        category = get_category(category_reason)
+        organization_data = MongoUtil.get_organization(category.lower())
+        
+        
+        inventory.category = category
+        inventory.reason_for_category = category_reason
+        inventory.organization_id = organization_data["organization_id"]
+        inventory.organization_name = organization_data["organization_name"]
+        inventory.organization_address = organization_data["address"]
 
         # Default values while creating new inventory item
         inventory.green_coins = 10
