@@ -7,15 +7,15 @@ from app.utils import MongoUtil
 
 class CollectorService:
     @staticmethod
-    def get_inventory_list_by_collector_id(collector_id):
+    def get_inventory_list_by_collector_id(collector_id, status):
         try:
-            inventory_list = MongoUtil.list_inventory_by_collector_id(collector_id)
+            inventory_list = MongoUtil.list_inventory_by_collector_id(collector_id, status)
             if len(inventory_list)==0:
                 return {"success": False, "errorCode": "EKTU001",
                         "errorMessage": "No items found"}
             return {
                 'success': True,
-                'items': inventory_list,
+                'inventory_list': inventory_list,
                 'errorMessage': None,
                 'errorCode': None
             }

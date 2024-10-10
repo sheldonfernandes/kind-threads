@@ -1,1 +1,0 @@
-export {InventoryItem as default} from './InventoryItem'

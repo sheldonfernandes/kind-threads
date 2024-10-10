@@ -10,5 +10,5 @@ router = APIRouter(
 )
 
 @router.get("/{collector_id}/inventory_list")
-def fetch_items(collector_id: str):
-    return CollectorService.get_inventory_list_by_collector_id(collector_id)
+def fetch_items(collector_id: str, status : str = 'picked_up'):
+    return CollectorService.get_inventory_list_by_collector_id(collector_id,status)

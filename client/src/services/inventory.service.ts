@@ -1,7 +1,12 @@
 import axios from "axios";
 import { ApiEndpoint } from "../constants/api-endpoints.constant";
 import { AppConst } from "../constants/app.constant";
-import { CreateInventoryData, InventoryData, InventoryListType, UpdateInventory } from "../types/inventory.type";
+import {
+  CreateInventoryData,
+  InventoryData,
+  InventoryListType,
+  UpdateInventory,
+} from "../types/inventory.type";
 
 export const InventoryService = {
   getUserDonationInventoryList: async (
@@ -17,7 +22,7 @@ export const InventoryService = {
   },
 
   createInventory: async (
-    createInventoryData: CreateInventoryData    
+    createInventoryData: CreateInventoryData
   ): Promise<InventoryData> => {
     const apiEndpoint = new ApiEndpoint();
     return axios({
@@ -25,12 +30,11 @@ export const InventoryService = {
       baseURL: apiEndpoint.API_BASE_URL,
       timeout: AppConst.API_TIMEOUT,
       method: "POST",
-      data: createInventoryData
+      data: createInventoryData,
     }).then((res) => res.data);
   },
 
-  getMarketplaceList: async (
-  ): Promise<InventoryListType> => {
+  getMarketplaceList: async (): Promise<InventoryListType> => {
     const apiEndpoint = new ApiEndpoint();
     return axios({
       url: apiEndpoint.MARKETPLACE_API,
@@ -41,7 +45,7 @@ export const InventoryService = {
   },
 
   updateStatus: async (
-    updateInventory:UpdateInventory
+    updateInventory: UpdateInventory
   ): Promise<InventoryListType> => {
     const apiEndpoint = new ApiEndpoint();
     return axios({
@@ -49,7 +53,21 @@ export const InventoryService = {
       baseURL: apiEndpoint.API_BASE_URL,
       timeout: AppConst.API_TIMEOUT,
       method: "PUT",
-      data:updateInventory
+      data: updateInventory,
+    }).then((res) => res.data);
+  },
+
+  getCollectorInventoryList: async (
+    collector_id: string,
+    status: string
+  ): Promise<InventoryListType> => {
+    const apiEndpoint = new ApiEndpoint();
+    console.log(apiEndpoint.COLLECTOR_INVLIST_API(collector_id,status))
+    return axios({
+      url: apiEndpoint.COLLECTOR_INVLIST_API(collector_id,status),
+      baseURL: apiEndpoint.API_BASE_URL,
+      timeout: AppConst.API_TIMEOUT,
+      method: "GET",
     }).then((res) => res.data);
   },
 };

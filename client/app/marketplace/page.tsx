@@ -1,6 +1,7 @@
 "use client";
-import InventoryItem from "@/src/components/InventoryItem";
+import DroppedoffList from "@/src/components/DroppedOffList";
 import MarketplaceDetail from "@/src/components/MarketplaceDetail";
+import PickedUpList from "@/src/components/PickedUpList";
 import withAuth from "@/src/components/ProtectedRoute";
 import UserDonationList from "@/src/components/UserDonationList/UserDonationList";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,7 @@ import { Container, Tab, Tabs } from "react-bootstrap";
 export const Marketplace = () => {
   const [key, setKey] = useState("marketplace");
   const router = useRouter();
- 
+
   return (
     <Container>
       <Tabs
@@ -22,13 +23,13 @@ export const Marketplace = () => {
           <MarketplaceDetail />
         </Tab>
         <Tab eventKey="my_donation" title="My Donation">
-        <UserDonationList />
+          <UserDonationList />
         </Tab>
         <Tab eventKey="picked_up" title="Picked Up">
-          <InventoryItem />
+          <PickedUpList />
         </Tab>
         <Tab eventKey="received" title="Dropped Off">
-          <InventoryItem />
+          <DroppedoffList />
         </Tab>
       </Tabs>
     </Container>
