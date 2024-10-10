@@ -67,3 +67,43 @@ def get_organization(category):
     db = get_database()
     data = db.get_collection('organizations').find_one({"category": category}, {'_id': 0})
     return data
+
+def aggregate_inventory_by_user_id(userid):
+    db = get_database()
+    data = db.get_collection('inventory').aggregate(
+    [
+        {
+            "$match": {
+                "user_id": userid
+            }
+        },
+        {
+            "$group": {
+                "_id": {
+                    "isCotton": {
+                        "$cond": [
+                            { "$eq": ['$fabric_type', 'cotton'] },
+                            True,
+                            False
+                        ]
+                    }
+                },
+                "count": { "$sum": 1 }
+            }
+        },
+        {
+            "$group": {
+                "_id": None,
+                "total": { "$sum": "$count" },  # Total count of all items
+                "details": { 
+                    "$push": { 
+                        "isCotton": "$_id.isCotton", 
+                        "count": "$count"
+                    } 
+                }
+            }
+        }
+    ]
+    ).to_list(100)
+    return data 
+

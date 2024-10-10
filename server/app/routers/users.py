@@ -24,3 +24,8 @@ def validate_user(userLoginParams: UserLoginParams):
 @router.post("/register")
 def validate_user(registerUserParams: RegisterUserParams):
     return UserService.register_user(registerUserParams)
+
+
+@router.get("/{userid}/dashboard_statistics/")
+def get_dashboard_statistics(userid: str):
+    return UserService.get_dashboard_statistics_by_user_id(userid)
