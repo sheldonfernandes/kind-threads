@@ -51,6 +51,7 @@ export type InventoryDetailModal = {
   organization_name?: string;  
   organization_address?: string;  
   inventory_id?:string
+  drop_off_date?:string | null
 }
 
 export type UpdateInventory = {

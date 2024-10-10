@@ -18,21 +18,27 @@ def get_user_profile(userid):
     data = db.get_collection('users').find_one({"user_id": userid}, {'_id': 0})
     return data
 
+
 def list_inventory_by_user_id(userid):
     db = get_database()
     data = db.get_collection('inventory').find(
         {"user_id": userid}, {'_id': 0}).to_list(100)
     return data
 
+
 def list_inventory_by_status(org_received_status):
     db = get_database()
-    data = db.get_collection('inventory').find({"organization_received_status": org_received_status},{'_id': 0}).to_list(100)
+    data = db.get_collection('inventory').find(
+        {"organization_received_status": org_received_status}, {'_id': 0}).to_list(100)
     return data
 
-def list_inventory_by_collector_id(collector_id):
+
+def list_inventory_by_collector_id(collector_id, status):
     db = get_database()
-    data = db.get_collection('inventory').find({"collector_id": collector_id},{'_id': 0}).to_list(100)
+    data = db.get_collection('inventory').find(
+        {"collector_id": collector_id, "organization_received_status": status}, {'_id': 0}).to_list(100)
     return data
+
 
 def create_new_inventory(inventory_data):
     db = get_database()
@@ -42,12 +48,16 @@ def create_new_inventory(inventory_data):
     inventory['_id'] = str(inventory['_id'])
     return inventory
 
+
 def update_inventory(inventory_id, inventory_update_data):
     db = get_database()
     collection = db['inventory']
-    updated_inventory = collection.update_one({'inventory_id': inventory_id}, {"$set": inventory_update_data})
-    updated_inventory = collection.find_one({'inventory_id': inventory_id},{'_id': 0})
+    updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
+                                              "$set": inventory_update_data})
+    updated_inventory = collection.find_one(
+        {'inventory_id': inventory_id}, {'_id': 0})
     return updated_inventory
+
 
 def validate_user(userLoginParams: UserLoginParams):
     db = get_database()
@@ -63,47 +73,49 @@ def register_user(registerUserParams: RegisterUserParams):
         {"user_id": user_id, "total_green_coins": 0, **jsonable_encoder(registerUserParams)})
     return data
 
+
 def get_organization(category):
     db = get_database()
-    data = db.get_collection('organizations').find_one({"category": category}, {'_id': 0})
+    data = db.get_collection('organizations').find_one(
+        {"category": category}, {'_id': 0})
     return data
+
 
 def aggregate_inventory_by_user_id(userid):
     db = get_database()
     data = db.get_collection('inventory').aggregate(
-    [
-        {
-            "$match": {
-                "user_id": userid
-            }
-        },
-        {
-            "$group": {
-                "_id": {
-                    "isCotton": {
-                        "$cond": [
-                            { "$eq": ['$fabric_type', 'cotton'] },
-                            True,
-                            False
-                        ]
+        [
+            {
+                "$match": {
+                    "user_id": userid
+                }
+            },
+            {
+                "$group": {
+                    "_id": {
+                        "isCotton": {
+                            "$cond": [
+                                {"$eq": ['$fabric_type', 'cotton']},
+                                True,
+                                False
+                            ]
+                        }
+                    },
+                    "count": {"$sum": 1}
+                }
+            },
+            {
+                "$group": {
+                    "_id": None,
+                    "total": {"$sum": "$count"},  # Total count of all items
+                    "details": {
+                        "$push": {
+                            "isCotton": "$_id.isCotton",
+                            "count": "$count"
+                        }
                     }
-                },
-                "count": { "$sum": 1 }
-            }
-        },
-        {
-            "$group": {
-                "_id": None,
-                "total": { "$sum": "$count" },  # Total count of all items
-                "details": { 
-                    "$push": { 
-                        "isCotton": "$_id.isCotton", 
-                        "count": "$count"
-                    } 
                 }
             }
-        }
-    ]
+        ]
     ).to_list(100)
-    return data 
-
+    return data

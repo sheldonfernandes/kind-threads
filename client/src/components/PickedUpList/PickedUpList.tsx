@@ -22,8 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { InventoryService } from "@/src/services/inventory.service";
 import { useUpdateInventory } from "@/src/hooks/useUpdateInventory";
 
-export const MarketplaceDetail = () => {
-  const router = useRouter();
+export const PickedUpList = () => {
   const { userData } = useAuthStore();
   const {
     mutate,
@@ -34,16 +33,22 @@ export const MarketplaceDetail = () => {
     showModal: false,
   });
   const {
-    data: markeplaceListData,
-    isPending: ismarkeplaceListPending,
-    refetch: refetchMarketplaceList,
+    data: pickedUpListData,
+    isPending: ispickedUpListPending,
+    refetch: refetchPickedUpList,
   } = useQuery({
-    queryKey: [QueryKey.MARKETPLACE_LIST],
-    queryFn: () => InventoryService.getMarketplaceList(),
+    queryKey: [QueryKey.PICKEDUP_LIST],
+    queryFn: () =>
+      InventoryService.getPickedUpList(
+        userData?.user_id || "",
+        OrganizationStatusEnum.PICKED_UP
+      ),
   });
 
+  console.log(pickedUpListData);
+
   useEffect(() => {
-    refetchMarketplaceList();
+    refetchPickedUpList();
   }, []);
 
   const onDetailsClick = (item: InventoryData) => {
@@ -57,31 +62,34 @@ export const MarketplaceDetail = () => {
       picked_up_date: item.picked_up_date
         ? new AppUtil().getDate(item.picked_up_date)
         : "",
+      drop_off_date: item.drop_off_date
+        ? new AppUtil().getDate(item.drop_off_date)
+        : "",
     });
   };
 
   const handleClose = () => setDetailModal({ showModal: false });
 
-  const handlePickedUp = (inventory_id: string | undefined) => {
+  const handleDroppedOff = (inventory_id: string | undefined) => {
     mutate({
       inventory_id: inventory_id || "",
       collector_id: userData?.user_id || "",
       collector_name: userData?.user_name || "",
-      organization_received_status: OrganizationStatusEnum.PICKED_UP,
+      organization_received_status: OrganizationStatusEnum.RECEIVED,
     });
     setDetailModal({ showModal: false });
   };
 
   if (isSuccessUpdateInventory) {
-    refetchMarketplaceList();
+    refetchPickedUpList();
   }
 
   return (
     <Container fluid>
       <Row>
-        {markeplaceListData && markeplaceListData.inventory_list.length ? (
+        {pickedUpListData && pickedUpListData.inventory_list?.length ? (
           <Row>
-            {markeplaceListData?.inventory_list.map((item: InventoryData) => (
+            {pickedUpListData?.inventory_list.map((item: InventoryData) => (
               <Col xs={12} sm={6} md={4} lg={4} xl={4}>
                 <Card className="my-3 mx-3">
                   <Card.Img
@@ -94,7 +102,7 @@ export const MarketplaceDetail = () => {
                     <Card.Title>{item.category}</Card.Title>
                     <Card.Text>
                       <p>
-                        Status: {item.organization_received_status}
+                        Item Picked up
                         <br />
                         Pickup date:{" "}
                         {new AppUtil().getDate(item.picked_up_date)}
@@ -104,7 +112,7 @@ export const MarketplaceDetail = () => {
                     </Card.Text>
 
                     <Button onClick={() => onDetailsClick(item)}>
-                      Pick up
+                      Drop Off
                     </Button>
                   </Card.Body>
                 </Card>
@@ -123,19 +131,15 @@ export const MarketplaceDetail = () => {
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <Col>Pick up date</Col>
-            <Col>{detailModal?.picked_up_date}</Col>
-          </Row>
-          <Row>
-            <Col>Pick up Address</Col>
-            <Col>{detailModal?.pick_up_address}</Col>
-          </Row>
-          <Row>
             <Col>Organization Name</Col>
             <Col>{detailModal?.organization_name}</Col>
           </Row>
           <Row>
-            <Col>Organization Address</Col>
+            <Col>Drop off date</Col>
+            <Col>{detailModal?.drop_off_date}</Col>
+          </Row>
+          <Row>
+            <Col>Drop off Address</Col>
             <Col>{detailModal?.organization_address}</Col>
           </Row>
         </Modal.Body>
@@ -145,13 +149,13 @@ export const MarketplaceDetail = () => {
           </Button>
           <Button
             variant="primary"
-            onClick={() => handlePickedUp(detailModal?.inventory_id)}
+            onClick={() => handleDroppedOff(detailModal?.inventory_id)}
           >
-            Picked Up
+            Dropped off
           </Button>
         </Modal.Footer>
       </Modal>
-      {ismarkeplaceListPending && isUpdateStatusPending && <AppLoader />}
+      {ispickedUpListPending && isUpdateStatusPending && <AppLoader />}
     </Container>
   );
 };
