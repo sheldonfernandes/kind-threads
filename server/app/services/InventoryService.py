@@ -123,3 +123,38 @@ class InventoryService:
             print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
+    def get_dashboard_statistics():
+        try:
+            data = MongoUtil.aggregate_inventory()
+            if data == None:
+                return {"success": False, "errorCode": "EKTU001",
+                        "errorMessage": "No donations found for user"}
+            
+            # Calculate water saved
+            WEIGHT_PER_ITEM = .4
+            WATER_PER_KG_COTTON = 4000
+            WATER_PER_KG_OTHER_CLOTH = 500
+            water_saved = 0
+            for x in data[0]['details']:
+                if x['isCotton'] == True:
+                    water_saved += x['count'] * WEIGHT_PER_ITEM * WATER_PER_KG_COTTON
+                if x['isCotton'] == False:
+                    water_saved += x['count'] * WEIGHT_PER_ITEM * WATER_PER_KG_OTHER_CLOTH
+
+            # Calculate Carbon footprint
+            CARBON_PER_KG = 10
+            carbon = data[0]['total'] * WEIGHT_PER_ITEM * CARBON_PER_KG
+
+            stats  = { 'water_saved': water_saved, 'carbon': carbon, 'clothes_donated': data[0]['total'] }
+            return {
+                'success': True,
+                'user_data': stats,
+                'errorMessage': None,
+                'errorCode': None
+            }
+        except Exception as e:
+            print(f"Error in user service: {e}")
+            print(traceback.format_exc())
+            raise HTTPException(status_code=404, detail=str(e))

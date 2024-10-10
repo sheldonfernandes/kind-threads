@@ -28,3 +28,7 @@ def create_inventory(inventoryCreateModel: InventoryCreateModel):
 def update_inventory(inventory_id: str, inventoryUpdateModel: InventoryUpdateModel):
     return InventoryService.update_inventory(inventory_id, inventoryUpdateModel)
 
+
+@router.get("/dashboard_statistics/")
+def get_dashboard_statistics():
+    return InventoryService.get_dashboard_statistics()
