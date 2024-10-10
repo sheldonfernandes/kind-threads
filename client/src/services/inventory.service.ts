@@ -57,11 +57,12 @@ export const InventoryService = {
     }).then((res) => res.data);
   },
 
-  getPickedUpList: async (
+  getCollectorInventoryList: async (
     collector_id: string,
     status: string
   ): Promise<InventoryListType> => {
     const apiEndpoint = new ApiEndpoint();
+    console.log(apiEndpoint.COLLECTOR_INVLIST_API(collector_id,status))
     return axios({
       url: apiEndpoint.COLLECTOR_INVLIST_API(collector_id,status),
       baseURL: apiEndpoint.API_BASE_URL,

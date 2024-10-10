@@ -46,6 +46,7 @@ export enum OrganizationStatusEnum  {
 export type InventoryDetailModal = {
   showModal:boolean;
   category?: string;
+  user_name?: string;
   picked_up_date?: string | null;
   pick_up_address?: string;
   organization_name?: string;  

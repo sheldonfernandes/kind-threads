@@ -6,6 +6,7 @@ from bson import ObjectId
 from bson.json_util import dumps, loads
 
 from app.models.User import RegisterUserParams, UserLoginParams
+from app.models.Inventory import InventoryUpdateModel
 
 
 def get_database():
@@ -49,11 +50,26 @@ def create_new_inventory(inventory_data):
     return inventory
 
 
-def update_inventory(inventory_id, inventory_update_data):
+def update_inventory(inventory_id: str, inventory_update_data: InventoryUpdateModel):
     db = get_database()
     collection = db['inventory']
-    updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
-                                              "$set": inventory_update_data})
+    if (inventory_update_data.organization_received_status == 'picked_up'):
+        updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
+            "$set": {
+                                                  "collector_id": inventory_update_data.collector_id,
+                                                  "collector_name": inventory_update_data.collector_name,
+                                                  "organization_received_status": inventory_update_data.organization_received_status,
+                                                  "picked_up_date": inventory_update_data.picked_up_date,
+                                                  "drop_off_date": inventory_update_data.drop_off_date}})
+    else:
+        updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
+            "$set": {
+                "collector_id": inventory_update_data.collector_id,
+                                                  "collector_name": inventory_update_data.collector_name,
+                                                  "organization_received_status": inventory_update_data.organization_received_status,
+                                                  "drop_off_date": inventory_update_data.drop_off_date
+                                                  }})
+
     updated_inventory = collection.find_one(
         {'inventory_id': inventory_id}, {'_id': 0})
     return updated_inventory
@@ -118,38 +134,39 @@ def aggregate_inventory_by_user_id(userid):
             }
         ]
     ).to_list(100)
-    return data 
+    return data
+
 
 def aggregate_inventory():
     db = get_database()
     data = db.get_collection('inventory').aggregate(
-    [
-        {
-            "$group": {
-                "_id": {
-                    "isCotton": {
-                        "$cond": [
-                            { "$eq": ['$fabric_type', 'cotton'] },
-                            True,
-                            False
-                        ]
+        [
+            {
+                "$group": {
+                    "_id": {
+                        "isCotton": {
+                            "$cond": [
+                                {"$eq": ['$fabric_type', 'cotton']},
+                                True,
+                                False
+                            ]
+                        }
+                    },
+                    "count": {"$sum": 1}
+                }
+            },
+            {
+                "$group": {
+                    "_id": None,
+                    "total": {"$sum": "$count"},  # Total count of all items
+                    "details": {
+                        "$push": {
+                            "isCotton": "$_id.isCotton",
+                            "count": "$count"
+                        }
                     }
-                },
-                "count": { "$sum": 1 }
-            }
-        },
-        {
-            "$group": {
-                "_id": None,
-                "total": { "$sum": "$count" },  # Total count of all items
-                "details": { 
-                    "$push": { 
-                        "isCotton": "$_id.isCotton", 
-                        "count": "$count"
-                    } 
                 }
             }
-        }
-    ]
+        ]
     ).to_list(100)
-    return data 
+    return data

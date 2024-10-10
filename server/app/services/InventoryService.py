@@ -99,7 +99,7 @@ class InventoryService:
         else:
              inventoryUpdateModel.drop_off_date = str(current_date)
         try:
-            response = MongoUtil.update_inventory(inventory_id, inventoryUpdateModel.model_dump())
+            response = MongoUtil.update_inventory(inventory_id, inventoryUpdateModel)
             return response
         except Exception as e:
             print(f"Error in inventory service: {e}")
