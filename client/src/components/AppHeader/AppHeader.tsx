@@ -1,18 +1,25 @@
 "use client";
 
 import { EndpointConst } from "@/src/constants/endpoints.constant";
+import { useAuthStore } from "@/src/store/Auth.store";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "react-bootstrap";
 
 export default function AppHeader({ children }: React.PropsWithChildren) {
   const router = useRouter();
+  const {setAuthenticated,isAuthenticated} = useAuthStore();
+
   const onDashboardClick = () => {
     router.push(EndpointConst.DASHBOARD_PAGE);
   }; 
   const onMarketplaceClick = () => {
     router.push(EndpointConst.MARKETPLACE_PAGE);
   };
+  const onLogoutClick = () => {
+    setAuthenticated(false)
+    router.push(EndpointConst.DASHBOARD_PAGE);
+  }
   return (
     <>
       {/* <Navbar bg="primary" data-bs-theme="dark">
@@ -51,6 +58,14 @@ export default function AppHeader({ children }: React.PropsWithChildren) {
                     Marketplace
                   </Button>
                 </li>
+               {isAuthenticated && <li>
+                  <Button
+                    onClick={onLogoutClick}
+                    className="btn-success nav-link text-white"
+                  >
+                    Logout
+                  </Button>
+                </li>}
                
               </ul>
             </div>
