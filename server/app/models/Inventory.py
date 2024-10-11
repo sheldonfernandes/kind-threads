@@ -21,6 +21,7 @@ class InventoryModel(BaseModel):
     collector_id: Optional[str] = ""
     collector_name: Optional[str] = ""
     drop_off_date: Optional[str] = ""
+    submitted_date: Optional[str] = ""
 
 class InventoryCreateModel(BaseModel):
     user_id: str

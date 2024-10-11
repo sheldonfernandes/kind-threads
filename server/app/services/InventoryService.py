@@ -46,6 +46,7 @@ class InventoryService:
         inventory.material_image = inventoryCreateModel.material_image
         inventory.fabric_type = inventoryCreateModel.fabric_type
         inventory.pick_up_address = inventoryCreateModel.pick_up_address
+        inventory.submitted_date = str(datetime.now())
 
         # Below feilds wil be assigned by watsonxai based date recived from user
 
