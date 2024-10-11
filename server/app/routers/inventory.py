@@ -3,18 +3,12 @@ from dotenv import load_dotenv
 from fastapi import APIRouter
 
 from app.services.InventoryService import InventoryService
-from app.models.ScanImage import ScanImage
 from app.models.Inventory import InventoryCreateModel, InventoryUpdateModel
 
 load_dotenv()
 router = APIRouter(
     prefix=f"{os.getenv('ROOT_PATH') if os.getenv('ROOT_PATH') else ''}/inventory",
 )
-
-
-@router.post("/scanimage")
-def fetch_image_data(scannedImageData: ScanImage):
-    return InventoryService.fetch_image_data(scannedImageData)
 
 @router.get("/list_inventory/{org_received_status}")
 def get_inventory_list(org_received_status: str):

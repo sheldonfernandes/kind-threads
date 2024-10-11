@@ -6,7 +6,6 @@ from fastapi import HTTPException
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema import HumanMessage, SystemMessage
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames
-from app.models.ScanImage import ScanImage
 from app.models.Inventory import InventoryModel, InventoryCreateModel, InventoryUpdateModel
 from app.utils import MongoUtil
 from langchain_ibm import WatsonxLLM

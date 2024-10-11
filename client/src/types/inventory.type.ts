@@ -10,7 +10,6 @@ export type CreateInventoryData = {
   user_id: string;
   user_name: string;
   material_image: string;
-  fabric_type: string;
   pick_up_address: string;
 };
 
@@ -20,8 +19,6 @@ export type InventoryData = {
   user_id: string;
   user_name: string;
   material_image: string;
-  image_type: string;
-  fabric_type: string;
   category: string;
   reason_for_category: string;
   green_coins: number;
