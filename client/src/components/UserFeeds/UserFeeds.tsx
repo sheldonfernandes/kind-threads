@@ -22,24 +22,24 @@ export const UserFeeds = () => {
         </Row>
 
         <Row className="mt-5">
-          <Col sm={4} md={4} lg={4} className="fs-5 fw-bold">
+          <Col xs={4} sm={4} md={4} lg={4} className="fs-5 fw-bold">
             Carbon Footprint
           </Col>
-          <Col sm={4} md={4} lg={4} className="fs-5 fw-bold">
+          <Col xs={4} sm={4} md={4} lg={4} className="fs-5 fw-bold">
             Water Saved
           </Col>
-          <Col sm={4} md={4} lg={4} className="fs-5 fw-bold">
+          <Col xs={4} sm={4} md={4} lg={4} className="fs-5 fw-bold">
             Clothes Donated
           </Col>
         </Row>
         <Row>
-          <Col sm={4} md={4} lg={4}>
+          <Col xs={4} sm={4} md={4} lg={4}>
             1
           </Col>
-          <Col sm={4} md={4} lg={4}>
+          <Col xs={4} sm={4} md={4} lg={4}>
             2
           </Col>
-          <Col sm={4} md={4} lg={4}>
+          <Col xs={4} sm={4} md={4} lg={4}>
             3
           </Col>
         </Row>

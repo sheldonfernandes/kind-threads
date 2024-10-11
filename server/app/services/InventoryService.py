@@ -1,6 +1,6 @@
-import re
 import traceback
 import uuid
+import random
 
 from fastapi import HTTPException
 from langchain_core.prompts import ChatPromptTemplate
@@ -33,6 +33,8 @@ watsonx_llm = WatsonxLLM(
     params=params,
     streaming=False,
 )
+
+FABRIC_TYPE=["Cotton","Acrylic Fabric","Linen","Nylon","Silk","Wool","Polyester"]
 class InventoryService:
     @staticmethod
     def create_inventory(inventoryCreateModel: InventoryCreateModel):
@@ -43,7 +45,7 @@ class InventoryService:
         inventory.user_id = inventoryCreateModel.user_id
         inventory.user_name = inventoryCreateModel.user_name
         inventory.material_image = inventoryCreateModel.material_image
-        inventory.fabric_type = inventoryCreateModel.fabric_type
+        inventory.fabric_type = random.choice(FABRIC_TYPE)
         inventory.pick_up_address = inventoryCreateModel.pick_up_address
         inventory.submitted_date = str(datetime.now())
 
@@ -56,7 +58,7 @@ class InventoryService:
                     HumanMessage(content=[
                         {"type": "image_url",
                          "image_url": {inventoryCreateModel.material_image}},
-                        {"type": "text", "text": f"Select either donate or recycle or upcycle for the fabric type {inventoryCreateModel.fabric_type} shown in the image?"}
+                        {"type": "text", "text": f"Select either donate or recycle or upcycle for the shown in the image?"}
                     ])
                 ]
             )

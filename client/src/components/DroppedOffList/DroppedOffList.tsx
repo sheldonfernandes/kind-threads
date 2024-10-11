@@ -2,6 +2,7 @@ import { useAuthStore } from "@/src/store/Auth.store";
 import {
   InventoryData,
   InventoryDetailModal,
+  InventoryListType,
   OrganizationStatusEnum,
 } from "@/src/types/inventory.type";
 import { useRouter } from "next/navigation";
@@ -17,39 +18,15 @@ import {
 } from "react-bootstrap";
 import AppLoader from "../AppLoader";
 import { AppUtil } from "@/src/utils/App.util";
-import { QueryKey } from "@/src/constants/query-key.constant";
-import { useQuery } from "@tanstack/react-query";
-import { InventoryService } from "@/src/services/inventory.service";
-import { useUpdateInventory } from "@/src/hooks/useUpdateInventory";
 
-export const DroppedoffList = () => {
-  const { userData } = useAuthStore();
-  const {
-    mutate,
-    isPending: isUpdateStatusPending,
-    isSuccess: isSuccessUpdateInventory,
-  } = useUpdateInventory();
+type IProps = {
+  inventoryListData: InventoryListType | undefined;
+}
+export const DroppedoffList = (props: IProps) => {
+  const {inventoryListData} = props;
   const [detailModal, setDetailModal] = useState<InventoryDetailModal>({
     showModal: false,
   });
-  const {
-    data: inventoryListData,
-    isPending: isInventoryListPending,
-    refetch: refetchInventoryList,
-  } = useQuery({
-    queryKey: [QueryKey.DROPPEDOFF_LIST],
-    queryFn: () =>
-      InventoryService.getCollectorInventoryList(
-        userData?.user_id || "",
-        OrganizationStatusEnum.RECEIVED
-      ),
-  });
-
-  console.log(inventoryListData)
-
-  useEffect(() => {
-    refetchInventoryList();
-  }, []);
 
   const onDetailsClick = (item: InventoryData) => {
     setDetailModal({
@@ -69,10 +46,6 @@ export const DroppedoffList = () => {
   };
 
   const handleClose = () => setDetailModal({ showModal: false });
-
-  if (isSuccessUpdateInventory) {
-    refetchInventoryList();
-  }
 
   return (
     <Container fluid>
@@ -138,7 +111,6 @@ export const DroppedoffList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {isInventoryListPending && isUpdateStatusPending && <AppLoader />}
     </Container>
   );
 };

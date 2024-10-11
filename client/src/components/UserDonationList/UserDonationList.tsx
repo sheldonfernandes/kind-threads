@@ -18,30 +18,25 @@ import { useAuthStore } from "@/src/store/Auth.store";
 import {
   InventoryData,
   InventoryDetailModal,
+  InventoryListType,
   OrganizationStatusEnum,
 } from "@/src/types/inventory.type";
 import { useEffect, useState } from "react";
 import { AppUtil } from "@/src/utils/App.util";
 import AppLoader from "../AppLoader";
-export const UserDonationList = () => {
+
+
+type Iprops = {
+  userDonationInventoryListData: InventoryListType | undefined;
+};
+
+
+export const UserDonationList = (props: Iprops) => {
+  const {userDonationInventoryListData} = props;
   const router = useRouter();
-  const { userData } = useAuthStore();
   const [detailModal, setDetailModal] = useState<InventoryDetailModal>({
     showModal: false,
   });
-  const {
-    data: userDonationInventoryListData,
-    isPending: isUserInventoryListPending,
-    refetch: refetchUserDonationInventoryList
-  } = useQuery({
-    queryKey: [QueryKey.USER_DONATION_INVENTORY_LIST],
-    queryFn: () =>
-      InventoryService.getUserDonationInventoryList(userData?.user_id),
-  });
-
-  useEffect(()=>{
-    refetchUserDonationInventoryList()
-  },[])
 
   const onDonationClick = () => {
     router.push(EndpointConst.DONATION_DETAILS_PAGE);
@@ -150,7 +145,6 @@ export const UserDonationList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {isUserInventoryListPending && <AppLoader />}
     </Container>
   );
 };

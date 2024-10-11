@@ -1,11 +1,10 @@
-import { useAuthStore } from "@/src/store/Auth.store";
 import {
   InventoryData,
   InventoryDetailModal,
+  InventoryListType,
   OrganizationStatusEnum,
 } from "@/src/types/inventory.type";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -15,36 +14,18 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-import AppLoader from "../AppLoader";
 import { AppUtil } from "@/src/utils/App.util";
-import { QueryKey } from "@/src/constants/query-key.constant";
-import { useQuery } from "@tanstack/react-query";
-import { InventoryService } from "@/src/services/inventory.service";
-import { useUpdateInventory } from "@/src/hooks/useUpdateInventory";
 
-export const MarketplaceDetail = () => {
-  const router = useRouter();
-  const { userData } = useAuthStore();
-  const {
-    mutate,
-    isPending: isUpdateStatusPending,
-    isSuccess: isSuccessUpdateInventory,
-  } = useUpdateInventory();
+type Iprops = {
+  onUpdateStatus: (inventory_id: string,status:string) => void;
+  markeplaceListData: InventoryListType | undefined;
+};
+export const MarketplaceDetail = (props: Iprops) => {
+  const { markeplaceListData, onUpdateStatus } = props;
+
   const [detailModal, setDetailModal] = useState<InventoryDetailModal>({
     showModal: false,
   });
-  const {
-    data: markeplaceListData,
-    isPending: ismarkeplaceListPending,
-    refetch: refetchMarketplaceList,
-  } = useQuery({
-    queryKey: [QueryKey.MARKETPLACE_LIST],
-    queryFn: () => InventoryService.getMarketplaceList(),
-  });
-
-  useEffect(() => {
-    refetchMarketplaceList();
-  }, []);
 
   const onDetailsClick = (item: InventoryData) => {
     setDetailModal({
@@ -63,19 +44,9 @@ export const MarketplaceDetail = () => {
   const handleClose = () => setDetailModal({ showModal: false });
 
   const handlePickedUp = (inventory_id: string | undefined) => {
-    mutate({
-      inventory_id: inventory_id || "",
-      collector_id: userData?.user_id || "",
-      collector_name: userData?.user_name || "",
-      organization_received_status: OrganizationStatusEnum.PICKED_UP,
-    });
+    onUpdateStatus(inventory_id || "", OrganizationStatusEnum.PICKED_UP);
     setDetailModal({ showModal: false });
   };
-
-  if (isSuccessUpdateInventory) {
-    refetchMarketplaceList();
-  }
-
   return (
     <Container fluid>
       <Row>
@@ -151,7 +122,6 @@ export const MarketplaceDetail = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {ismarkeplaceListPending && isUpdateStatusPending && <AppLoader />}
     </Container>
   );
 };

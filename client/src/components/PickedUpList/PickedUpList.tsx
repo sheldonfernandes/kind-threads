@@ -2,10 +2,10 @@ import { useAuthStore } from "@/src/store/Auth.store";
 import {
   InventoryData,
   InventoryDetailModal,
+  InventoryListType,
   OrganizationStatusEnum,
 } from "@/src/types/inventory.type";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -17,39 +17,16 @@ import {
 } from "react-bootstrap";
 import AppLoader from "../AppLoader";
 import { AppUtil } from "@/src/utils/App.util";
-import { QueryKey } from "@/src/constants/query-key.constant";
-import { useQuery } from "@tanstack/react-query";
-import { InventoryService } from "@/src/services/inventory.service";
-import { useUpdateInventory } from "@/src/hooks/useUpdateInventory";
+type Iprops = {
+  onUpdateStatus: (inventory_id: string,status:string) => void;
+  pickedUpListData: InventoryListType | undefined;
+};
 
-export const PickedUpList = () => {
-  const { userData } = useAuthStore();
-  const {
-    mutate,
-    isPending: isUpdateStatusPending,
-    isSuccess: isSuccessUpdateInventory,
-  } = useUpdateInventory();
+export const PickedUpList = (props: Iprops) => {
+  const {pickedUpListData,onUpdateStatus} = props;
   const [detailModal, setDetailModal] = useState<InventoryDetailModal>({
     showModal: false,
   });
-  const {
-    data: pickedUpListData,
-    isPending: ispickedUpListPending,
-    refetch: refetchPickedUpList,
-  } = useQuery({
-    queryKey: [QueryKey.PICKEDUP_LIST],
-    queryFn: () =>
-      InventoryService.getCollectorInventoryList(
-        userData?.user_id || "",
-        OrganizationStatusEnum.PICKED_UP
-      ),
-  });
-
-  console.log(pickedUpListData);
-
-  useEffect(() => {
-    refetchPickedUpList();
-  }, []);
 
   const onDetailsClick = (item: InventoryData) => {
     setDetailModal({
@@ -71,19 +48,9 @@ export const PickedUpList = () => {
   const handleClose = () => setDetailModal({ showModal: false });
 
   const handleDroppedOff = (inventory_id: string | undefined) => {
-    mutate({
-      inventory_id: inventory_id || "",
-      collector_id: userData?.user_id || "",
-      collector_name: userData?.user_name || "",
-      organization_received_status: OrganizationStatusEnum.RECEIVED,
-    });
+    onUpdateStatus( inventory_id || "", OrganizationStatusEnum.RECEIVED);
     setDetailModal({ showModal: false });
   };
-
-  if (isSuccessUpdateInventory) {
-    refetchPickedUpList();
-  }
-
   return (
     <Container fluid>
       <Row>
@@ -155,7 +122,6 @@ export const PickedUpList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {ispickedUpListPending && isUpdateStatusPending && <AppLoader />}
     </Container>
   );
 };

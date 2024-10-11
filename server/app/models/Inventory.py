@@ -8,6 +8,7 @@ class InventoryModel(BaseModel):
     user_id: Optional[str] = ""
     user_name: Optional[str] = ""
     material_image: Optional[str] = ""
+    fabric_type: Optional[str] = ""
     category: Optional[str] = "" #= Field(..., regex="donate|recycle|upcycle")
     reason_for_category: Optional[str] = ""
     green_coins: int = 10
