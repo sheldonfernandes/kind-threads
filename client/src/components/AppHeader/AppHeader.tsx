@@ -10,7 +10,7 @@ export default function AppHeader({ children }: React.PropsWithChildren) {
   const router = useRouter();
   const {setAuthenticated,isAuthenticated} = useAuthStore();
 
-  const onDashboardClick = () => {
+  const onHomeClick = () => {
     router.push(EndpointConst.DASHBOARD_PAGE);
   }; 
   const onMarketplaceClick = () => {
@@ -44,10 +44,10 @@ export default function AppHeader({ children }: React.PropsWithChildren) {
               <ul className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                 <li>
                   <Button
-                    onClick={onDashboardClick}
+                    onClick={onHomeClick}
                     className="btn-success nav-link text-white"
                   >
-                    Dashboard
+                    Home
                   </Button>
                 </li>
                 <li>

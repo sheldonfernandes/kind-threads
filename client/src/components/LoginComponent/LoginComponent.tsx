@@ -43,7 +43,7 @@ export const LoginComponent = () => {
   if(loginData && loginData.success && loginData.user_data){
     setAuthenticated(true);
     setUserData(loginData.user_data)
-    router.push(EndpointConst.MARKETPLACE_PAGE);
+    router.push(EndpointConst.DASHBOARD_PAGE);
   }
 
   return (
