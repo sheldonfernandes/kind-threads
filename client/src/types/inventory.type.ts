@@ -31,6 +31,7 @@ export type InventoryData = {
   collector_id: string;
   collector_name: string;
   drop_off_date: string;
+  ai_response: string;
 };
 
 

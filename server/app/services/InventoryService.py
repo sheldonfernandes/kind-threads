@@ -9,6 +9,8 @@ from ibm_watsonx_ai.metanames import GenTextParamsMetaNames
 from app.models.Inventory import InventoryModel, InventoryCreateModel, InventoryUpdateModel
 from app.utils import MongoUtil
 from langchain_ibm import WatsonxLLM
+import json
+import re
 from datetime import datetime, timedelta
 
 from app.utils.WatsonUtil import get_watsonxai_creds, system_prompt
@@ -26,7 +28,8 @@ params = {
     GenTextParamsMetaNames.RANDOM_SEED: 10
 }
 watsonx_llm = WatsonxLLM(
-    model_id="mistralai/mixtral-8x7b-instruct-v01",
+    # model_id="meta-llama/llama-3-2-90b-vision-instruct",
+    model_id="mistralai/mistral-large",
     url=creds["url"],
     apikey=creds["apikey"],
     project_id=creds["projectid"],
@@ -57,8 +60,8 @@ class InventoryService:
                     SystemMessage(content=system_prompt()),
                     HumanMessage(content=[
                         {"type": "image_url",
-                         "image_url": {inventoryCreateModel.material_image}},
-                        {"type": "text", "text": f"Select either donate or recycle or upcycle for the shown in the image?"}
+                         "image_url": {"url": f"data:image/jpeg;base64,{inventoryCreateModel.material_image}"}}
+                        # {"type": "text", "text": f"Select either donate or recycle or upcycle for the shown in the image?"}
                     ])
                 ]
             )
@@ -66,6 +69,28 @@ class InventoryService:
         chain = chat_prompt_template | watsonx_llm
 
         category_reason = chain.invoke({})
+
+        # category_reason = """
+        # Assistant: ```json
+        # {
+        #         "short_desc": "Blue denim jeans with slight wear on the knees.",
+        #         "type": "jeans",
+        #         "brand": "Levi Strauss & Co.",
+        #         "size": "Large",
+        #         "condition": "slightly worn but well maintained",
+        #         "material": "denim",
+        #         "recommendation": "Consider cutting these blue denim jeans into shorts for casual summer outfits, making them more versatile. Donations to organizations like Goodwill Industries International and The Salvation Army ensure they reach those who need quality clothing items while also supporting community services.",
+        #         "donation_centers": ["Goodwill Store - Cary Towne Blvd, 319 N Harrison Ave, Cary, NC 27513", "Salvation Army Family Stores, 21 W Chatham St # G2, Apex, NC 27502"]
+        # }
+        # ```
+        # """
+        print(" = ================= AI response =================")
+        print(category_reason)
+        pattern = r'\{.*?\}'
+        data_string = re.search(pattern, category_reason, re.DOTALL).group()
+        print(data_string)
+        data_json = json.loads(data_string)
+        
         category = get_category(category_reason)
         organization_data = MongoUtil.get_organization(category.lower())
         
@@ -80,11 +105,12 @@ class InventoryService:
         inventory.green_coins = 10
         inventory.picked_up_date = str(datetime.now() + timedelta(days=2))
         inventory.organization_received_status = "pending"
+        inventory.ai_response = data_string
 
-        print(inventory.model_dump())
+        # print(inventory.model_dump())
         try:
             response = MongoUtil.create_new_inventory(inventory.model_dump())
-            print(response)
+            # print(response)
             return response
         except Exception as e:
             print(f"Error in inventory service: {e}")
