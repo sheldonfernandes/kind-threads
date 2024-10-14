@@ -63,46 +63,34 @@ By combining these technologies, Kind Threads is not only reducing environmental
 
 ### IBM watsonx product(s) used
 
-_INSTRUCTIONS: Included here is a list of IBM watsonx products. Remove any products you did not use. Leave only those included in your solution code. In your official submission on the Call for Code Global Challenge web site, you are required to provide details on where and how you used each IBM watsonx product so judges can review your implementation. Remove these instructions._
-
 **Featured watsonx products**
 
-- [watsonx.ai](https://www.ibm.com/products/watsonx-ai) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
+- [watsonx.ai](https://www.ibm.com/products/watsonx-ai) - We use Watsonx.AI to power the core image recognition functionality of Kind Threads. When a user uploads a picture of a clothing item, Watsonx.AI identifies the item, analyzes its condition, and provides recommendations for how it should be recycled or reused. Watsonx.AI’s AI models also calculate environmental benefits, such as the water saved or carbon emissions reduced from recycling the item.
 
-- [watsonx.governance](https://www.ibm.com/products/watsonx-governance) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-
-- [watsonx Assistant](https://cloud.ibm.com/catalog/services/watsonx-assistant) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
+- [watsonx Assistant](https://cloud.ibm.com/catalog/services/watsonx-assistant) - By integrating the Watson Assistant chat assistant with WhatsApp, users can initiate, manage, and complete the clothing donation process directly via chat. This can remove the need for users to open the app, making the experience more frictionless and accessible. 
 
 ### Other IBM technology used
 
-INSTRUCTIONS: List any other IBM technology or IBM AI services used in your solution and describe how each component was used. If you can provide details on where these were used in your code, that would help the judges review your submission.
 
 **Additional IBM AI services (Remove any that you did not use)**
 
-- [Watson Machine Learning](https://cloud.ibm.com/catalog/services/watson-machine-learning) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
+- [Watson Machine Learning](https://cloud.ibm.com/catalog/services/watson-machine-learning) - Watson Machine Learning provisioned IBM Cloud provides the foundational models and  generate AI toolset to build the image recognition functionality 
 
-- [Watson Studio](https://cloud.ibm.com/catalog/services/watson-studio) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
+- [Watson Studio](https://cloud.ibm.com/catalog/services/watson-studio) - Watson Studio is utilized as a development platform to collaborate on and fine-tune our prompt in the PromptLab
 
-- [Natural Language Understanding](https://cloud.ibm.com/catalog/services/natural-language-understanding) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-
-- [Speech to Text](https://cloud.ibm.com/catalog/services/speech-to-text) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-
-- [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-
-- [Language Translator](https://cloud.ibm.com/catalog/services/language-translator) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
 
 ### Solution architecture
-
-REPLACE THIS EXAMPLE WITH YOUR OWN, OR REMOVE THIS EXAMPLE
 
 Diagram and step-by-step description of the flow of our solution:
 
 ![Video transcription/translaftion app](https://developer.ibm.com/developer/tutorials/cfc-starter-kit-speech-to-text-app-example/images/cfc-covid19-remote-education-diagram-2.png)
 
-1. The user navigates to the site and uploads a video file.
-2. Watson Speech to Text processes the audio and extracts the text.
-3. Watson Translation (optionally) can translate the text to the desired language.
-4. The app stores the translated text as a document within Object Storage.
+1. User Uploads a Picture: Users use their camera to take a photo of an item they wish to recycle or donate.
+2. Item Identification: Watsonx.AI processes the image to identify the type of clothing and assess its condition.
+3. Environmental Impact Calculation: Watson Machine Learning models calculate potential water savings, CO2 emissions prevented, and other environmental metrics.
+4. Recommendations: The app provides recycling or donation recommendations, including nearby centers where the item can be dropped off.
+5. Micro-Economy Activation: Local workers acting as delivery agents can be notified to pick up the item and deliver it to a recycling center, creating income opportunities.
+6. Gamification and Impact Tracking: Users earn rewards and track their environmental impact via the app, motivating continued participation.
 
 ## Presentation materials
 
@@ -114,21 +102,25 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 ### Project development roadmap
 
-The project currently does the following things.
+The project currently does the following things:
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Item Recognition: Uses Watsonx.AI to identify clothing items and their condition.
+- Environmental Metrics Calculation: Calculates water and carbon savings from recycling the item.
+- Recycling and Donation Recommendations: Provides nearby centers for donation and recycling.
+- Micro-Economy Creation: Facilitates income generation for low-wage workers through a delivery network.
+- Gamification: Tracks user impact and encourages continued participation through rewards.
 
 In the future we plan to...
+- Expand the scope beyond cloth recycling to anything that is recyclable
+- Easier access to the application by making it available on social channels like Facebook Messenger and Whatsapp
+- Integrate language support for broader global use.
+- Create partnerships with larger recycling organizations and clothing brands.
+- Further develop the micro-economy to include more underserved communities.
 
 See below for our proposed schedule on next steps after Call for Code 2024 submission.
 
 ![Roadmap](./images/roadmap.jpg)
 
-## Additional details
-
-_INSTRUCTIONS: The following deliverables are suggested, but **optional**. Additional details like this can help the judges better review your solution. Remove any sections you are not using._
 
 ### How to run the project
 
