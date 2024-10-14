@@ -16,12 +16,17 @@ class InventoryModel(BaseModel):
     green_coins: int = 10
     picked_up_date: Optional[str] = ""
     pick_up_address: Optional[str] = ""
+    organization_id: Optional[str] = ""
+    organization_name: Optional[str] = ""
+    organization_address: Optional[str] = ""
     # = Field(default="pending", regex="pending|picked_up|received")
     donation_status: Optional[str] = ""
     collector_id: Optional[str] = ""
     collector_name: Optional[str] = ""
     drop_off_date: Optional[str] = ""
     submitted_date: Optional[str] = ""
+
+
     ai_response: Optional[str] = ""
     donation_center_selected: Optional[str] = ""
 
@@ -42,7 +47,7 @@ class InventoryUpdateStatusModel(BaseModel):
 
 
 class InventoryUpdateModel(BaseModel):
-    donation_status: str
+    DonationStatusEnum: str
     donation_center_selected: str
     collector_id: Optional[str] = ""
     collector_name: Optional[str] = ""

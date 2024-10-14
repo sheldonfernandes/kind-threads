@@ -19,21 +19,22 @@ import {
   InventoryData,
   InventoryDetailModal,
   InventoryListType,
-  OrganizationStatusEnum,
+  DonationStatusEnum,
 } from "@/src/types/inventory.type";
 import { useEffect, useState } from "react";
 import { AppUtil } from "@/src/utils/App.util";
 import AppLoader from "../AppLoader";
 
-
 type Iprops = {
+  onUpdateStatus: (inventory_id: string, status: string) => void;
   userDonationInventoryListData: InventoryListType | undefined;
 };
 
-
 export const UserDonationList = (props: Iprops) => {
-  const {userDonationInventoryListData} = props;
+  const { userDonationInventoryListData, onUpdateStatus } = props;
   const router = useRouter();
+  const { userData } = useAuthStore();
+
   const [detailModal, setDetailModal] = useState<InventoryDetailModal>({
     showModal: false,
   });
@@ -45,9 +46,9 @@ export const UserDonationList = (props: Iprops) => {
   const onDetailsClick = (item: InventoryData) => {
     setDetailModal({
       showModal: true,
+      inventory_id:item.inventory_id,
       category: item.category,
-      organization_name: item.organization_name,
-      organization_address:item.organization_address,
+      donation_center_selected: item.donation_center_selected,
       pick_up_address: item.pick_up_address,
       picked_up_date: item.picked_up_date
         ? new AppUtil().getDate(item.picked_up_date)
@@ -57,7 +58,11 @@ export const UserDonationList = (props: Iprops) => {
 
   const handleClose = () => setDetailModal({ showModal: false });
 
-  const handlePickedUp = () => {};
+  const handlePickedUp = (inventory_id: string | undefined) => {
+    onUpdateStatus(inventory_id || "", DonationStatusEnum.RECEIVED);
+    setDetailModal({ showModal: false });
+  };
+  
 
   return (
     <Container fluid>
@@ -90,7 +95,8 @@ export const UserDonationList = (props: Iprops) => {
                       <Card.Title>{item.category}</Card.Title>
                       <Card.Text>
                         <p>
-                          Status: {item.organization_received_status===OrganizationStatusEnum.PENDING?'Pending':(item.organization_received_status===OrganizationStatusEnum.PICKED_UP?'Item Picked Up':'Received')}
+                          Status:{" "}
+                          {item.donation_status}
                           <br />
                           Pickup date:{" "}
                           {new AppUtil().getDate(item.picked_up_date)}
@@ -99,9 +105,12 @@ export const UserDonationList = (props: Iprops) => {
                         </p>
                       </Card.Text>
 
-                      {item.organization_received_status===OrganizationStatusEnum.PENDING && <Button onClick={() => onDetailsClick(item)}>
-                        Pick up
-                      </Button> }
+                      {item.donation_status === DonationStatusEnum.PICKED_UP &&
+                        item.collector_id === userData?.user_id && (
+                          <Button onClick={() => onDetailsClick(item)}>
+                            Drop off
+                          </Button>
+                        )}
                     </Card.Body>
                   </Card>
                 </Col>
@@ -128,20 +137,19 @@ export const UserDonationList = (props: Iprops) => {
             <Col>{detailModal?.pick_up_address}</Col>
           </Row>
           <Row>
-            <Col>Organization Name</Col>
-            <Col>{detailModal?.organization_name}</Col>
+            <Col>Donation Centre</Col>
+            <Col>{detailModal?.donation_center_selected}</Col>
           </Row>
-          <Row>
-              <Col>Organization Address</Col>
-              <Col>{detailModal?.organization_address}</Col>
-            </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Okay
           </Button>
-          <Button variant="primary" onClick={handlePickedUp}>
-            Picked Up
+          <Button
+            variant="primary"
+            onClick={() => handlePickedUp(detailModal?.inventory_id)}
+          >
+            Dropped off
           </Button>
         </Modal.Footer>
       </Modal>

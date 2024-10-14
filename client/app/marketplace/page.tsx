@@ -10,7 +10,7 @@ import { useUpdateInventory } from "@/src/hooks/useUpdateInventory";
 import { InventoryService } from "@/src/services/inventory.service";
 import { useAuthStore } from "@/src/store/Auth.store";
 import {
-  OrganizationStatusEnum
+  DonationStatusEnum
 } from "@/src/types/inventory.type";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -42,20 +42,7 @@ export const Marketplace = () => {
     queryFn: () =>
       InventoryService.getCollectorInventoryList(
         userData?.user_id || "",
-        OrganizationStatusEnum.PICKED_UP
-      ),
-  });
-
-  const {
-    data: inventoryListData,
-    isPending: isInventoryListPending,
-    refetch: refetchInventoryList,
-  } = useQuery({
-    queryKey: [QueryKey.DROPPEDOFF_LIST],
-    queryFn: () =>
-      InventoryService.getCollectorInventoryList(
-        userData?.user_id || "",
-        OrganizationStatusEnum.RECEIVED
+        DonationStatusEnum.PICKED_UP
       ),
   });
 
@@ -72,7 +59,6 @@ export const Marketplace = () => {
   useEffect(() => {
     refetchMarketplaceList();
     refetchPickedUpList();
-    refetchInventoryList();
     refetchUserDonationInventoryList()
   }, [isSuccessUpdateInventory]);
 
@@ -81,17 +67,18 @@ export const Marketplace = () => {
       inventory_id: inventory_id,
       collector_id: userData?.user_id || "",
       collector_name: userData?.user_name || "",
-      organization_received_status: status,
+      donation_status: status,
     });
   };
 
   return (
-    <Container>
+    <Container className="my-3">
       <Tabs
         id="controlled-tab-example"
         activeKey={key}
         onSelect={(key) => key && setKey(key)}
         className="mb-3"
+        fill
       >
         <Tab eventKey="marketplace" title="Marketplace">
           <MarketplaceDetail
@@ -101,6 +88,7 @@ export const Marketplace = () => {
         </Tab>
         <Tab eventKey="my_donation" title="My Donation">
           <UserDonationList 
+          onUpdateStatus={onUpdateStatus}
           userDonationInventoryListData={userDonationInventoryListData}/>
         </Tab>
         <Tab eventKey="picked_up" title="Picked Up">
@@ -109,13 +97,12 @@ export const Marketplace = () => {
             pickedUpListData={pickedUpListData}
           />
         </Tab>
-        <Tab eventKey="received" title="Dropped Off">
+        {/* <Tab eventKey="received" title="Dropped Off">
           <DroppedoffList inventoryListData={inventoryListData} />
-        </Tab>
+        </Tab> */}
       </Tabs>
       {(ismarkeplaceListPending ||
         ispickedUpListPending ||
-        isInventoryListPending ||
         isUpdateStatusPending ||
         isUserInventoryListPending) && <AppLoader />}
     </Container>

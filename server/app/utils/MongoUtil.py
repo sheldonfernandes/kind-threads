@@ -6,7 +6,7 @@ from bson import ObjectId
 from bson.json_util import dumps, loads
 
 from app.models.User import RegisterUserParams, UserLoginParams
-from app.models.Inventory import InventoryUpdateModel
+from app.models.Inventory import InventoryUpdateModel, InventoryUpdateStatusModel
 
 
 def get_database():
@@ -27,17 +27,17 @@ def list_inventory_by_user_id(userid):
     return data
 
 
-def list_inventory_by_status(org_received_status):
+def get_marketplaceList():
     db = get_database()
     data = db.get_collection('inventory').find(
-        {"organization_received_status": org_received_status}, {'_id': 0}).to_list(100)
+        {"donation_status": {"$in": ["pending", "self_claim"]}}, {'_id': 0}).to_list(100)
     return data
 
 
-def list_inventory_by_collector_id(collector_id, status):
+def list_inventory_by_collector_id(collector_id):
     db = get_database()
     data = db.get_collection('inventory').find(
-        {"collector_id": collector_id, "organization_received_status": status}, {'_id': 0}).to_list(100)
+        {"collector_id": collector_id, 'user_id': {"$ne": collector_id}}, {'_id': 0}).to_list(100)
     return data
 
 
@@ -53,12 +53,35 @@ def create_new_inventory(inventory_data):
 def update_inventory(inventory_id: str, inventory_update_data: InventoryUpdateModel):
     db = get_database()
     collection = db['inventory']
-    if (inventory_update_data.organization_received_status == 'picked_up'):
+    if (inventory_update_data.collector_id == ""):
+        updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
+            "$set": {
+                "donation_status": inventory_update_data.donation_status,
+                "donation_center_selected": inventory_update_data.donation_center_selected
+            }})
+    else:
+        updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
+            "$set": {
+                "donation_status": inventory_update_data.donation_status,
+                "donation_center_selected": inventory_update_data.donation_center_selected,
+                "collector_id": inventory_update_data.collector_id,
+                "collector_name": inventory_update_data.collector_name
+            }})
+
+    updated_inventory = collection.find_one(
+        {'inventory_id': inventory_id}, {'_id': 0})
+    return updated_inventory
+
+
+def update_inventory_status(inventory_id: str, inventory_update_data: InventoryUpdateStatusModel):
+    db = get_database()
+    collection = db['inventory']
+    if (inventory_update_data.donation_status == 'picked_up'):
         updated_inventory = collection.update_one({'inventory_id': inventory_id}, {
             "$set": {
                                                   "collector_id": inventory_update_data.collector_id,
                                                   "collector_name": inventory_update_data.collector_name,
-                                                  "organization_received_status": inventory_update_data.organization_received_status,
+                                                  "donation_status": inventory_update_data.donation_status,
                                                   "picked_up_date": inventory_update_data.picked_up_date,
                                                   "drop_off_date": inventory_update_data.drop_off_date}})
     else:
@@ -66,10 +89,9 @@ def update_inventory(inventory_id: str, inventory_update_data: InventoryUpdateMo
             "$set": {
                 "collector_id": inventory_update_data.collector_id,
                                                   "collector_name": inventory_update_data.collector_name,
-                                                  "organization_received_status": inventory_update_data.organization_received_status,
+                                                  "donation_status": inventory_update_data.donation_status,
                                                   "drop_off_date": inventory_update_data.drop_off_date
                                                   }})
-
     updated_inventory = collection.find_one(
         {'inventory_id': inventory_id}, {'_id': 0})
     return updated_inventory

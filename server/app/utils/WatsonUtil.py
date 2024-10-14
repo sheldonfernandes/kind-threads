@@ -9,7 +9,7 @@ def get_watsonxai_creds():
 def system_prompt():
     return """Analyze the provided image of a item to recycle provided in base64 encoding and extract the following details and return in JSON format:
 
-1. short_desc: Identify the item
+1. short_desc: Describe the item
 2. type: Identify the type of item (e.g., shirt, pants, dress, bottle, can, etc.).
 3. brand: Detect and determine the brand if visible (e.g., via logos, tags, or design features).
 4. size: Determine the size (e.g., S, M, L, etc.) if available through tags or labels.

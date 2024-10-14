@@ -5,7 +5,6 @@ export type InventoryListType = {
   errorCode: string;
 };
 
-
 export type CreateInventoryData = {
   user_id: string;
   user_name: string;
@@ -15,7 +14,7 @@ export type CreateInventoryData = {
 
 export type InventoryData = {
   _id: string;
-  inventory_id:string;
+  inventory_id: string;
   user_id: string;
   user_name: string;
   material_image: string;
@@ -24,38 +23,56 @@ export type InventoryData = {
   green_coins: number;
   picked_up_date: string;
   pick_up_address: string;
-  organization_id: string;
-  organization_name: string;
-  organization_address:string;
-  organization_received_status: string;
+  donation_center_selected: string;
+  donation_status: string;
   collector_id: string;
   collector_name: string;
   drop_off_date: string;
-  ai_response: string;
+  ai_response: AIresponse;
 };
 
-
-export enum OrganizationStatusEnum  {
-  PENDING='pending',
-  PICKED_UP= 'picked_up',
-  RECEIVED='received'
+export enum DonationStatusEnum {
+  PENDING = "pending",
+  PICKED_UP = "picked_up",
+  RECEIVED = "received",
+  SELF_CLAIM = "self_claim",
+  SELF_CLAIM_PICKEDUP = "self_claim_picked_up"
 }
 
 export type InventoryDetailModal = {
-  showModal:boolean;
+  showModal: boolean;
   category?: string;
+  donation_status?: string;
   user_name?: string;
   picked_up_date?: string | null;
   pick_up_address?: string;
-  organization_name?: string;  
-  organization_address?: string;  
-  inventory_id?:string
-  drop_off_date?:string | null
-}
+  donation_center_selected?: string;
+  inventory_id?: string;
+  drop_off_date?: string | null;
+};
+export type AIresponse = {
+  short_desc: string;
+  type: string;
+  brand: string;
+  size: string;
+  condition: string;
+  material: string;
+  recommendation: string;
+  donation_type?:string;
+  donation_centers: string[];
+};
 
 export type UpdateInventory = {
-  inventory_id:string,
-  collector_id: string,
-  collector_name: string,
-  organization_received_status: string
-}
+  inventory_id: string;
+  collector_id: string;
+  collector_name: string;
+  donation_status: string;
+};
+
+export type UpdateDonation = {
+  inventory_id: string;
+  donation_status: string;
+  donation_center_selected?: string;
+  collector_id?: string;
+  collector_name?: string;
+};
