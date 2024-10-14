@@ -2,7 +2,7 @@ import {
   InventoryData,
   InventoryDetailModal,
   InventoryListType,
-  OrganizationStatusEnum,
+  DonationStatusEnum,
 } from "@/src/types/inventory.type";
 import { useState } from "react";
 import {
@@ -17,7 +17,7 @@ import {
 import { AppUtil } from "@/src/utils/App.util";
 
 type Iprops = {
-  onUpdateStatus: (inventory_id: string,status:string) => void;
+  onUpdateStatus: (inventory_id: string, status: string) => void;
   markeplaceListData: InventoryListType | undefined;
 };
 export const MarketplaceDetail = (props: Iprops) => {
@@ -31,9 +31,9 @@ export const MarketplaceDetail = (props: Iprops) => {
     setDetailModal({
       showModal: true,
       category: item.category,
-      organization_name: item.organization_name,
-      organization_address: item.organization_address,
+      donation_center_selected: item.donation_center_selected,
       pick_up_address: item.pick_up_address,
+      donation_status: item.donation_status,
       inventory_id: item.inventory_id,
       picked_up_date: item.picked_up_date
         ? new AppUtil().getDate(item.picked_up_date)
@@ -43,8 +43,16 @@ export const MarketplaceDetail = (props: Iprops) => {
 
   const handleClose = () => setDetailModal({ showModal: false });
 
-  const handlePickedUp = (inventory_id: string | undefined) => {
-    onUpdateStatus(inventory_id || "", OrganizationStatusEnum.PICKED_UP);
+  const handlePickedUp = (
+    inventory_id: string | undefined,
+    donation_status: string | undefined
+  ) => {
+    onUpdateStatus(
+      inventory_id || "",
+      donation_status && donation_status === DonationStatusEnum.SELF_CLAIM
+        ? DonationStatusEnum.SELF_CLAIM_PICKEDUP
+        : DonationStatusEnum.PICKED_UP
+    );
     setDetailModal({ showModal: false });
   };
   return (
@@ -65,7 +73,7 @@ export const MarketplaceDetail = (props: Iprops) => {
                     <Card.Title>{item.category}</Card.Title>
                     <Card.Text>
                       <p>
-                        Status: {item.organization_received_status}
+                        Status: {item.donation_status}
                         <br />
                         Pickup date:{" "}
                         {new AppUtil().getDate(item.picked_up_date)}
@@ -102,12 +110,8 @@ export const MarketplaceDetail = (props: Iprops) => {
             <Col>{detailModal?.pick_up_address}</Col>
           </Row>
           <Row>
-            <Col>Organization Name</Col>
-            <Col>{detailModal?.organization_name}</Col>
-          </Row>
-          <Row>
-            <Col>Organization Address</Col>
-            <Col>{detailModal?.organization_address}</Col>
+            <Col>Donation Centre</Col>
+            <Col>{detailModal?.donation_center_selected}</Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
@@ -116,7 +120,12 @@ export const MarketplaceDetail = (props: Iprops) => {
           </Button>
           <Button
             variant="primary"
-            onClick={() => handlePickedUp(detailModal?.inventory_id)}
+            onClick={() =>
+              handlePickedUp(
+                detailModal?.inventory_id,
+                detailModal?.donation_status
+              )
+            }
           >
             Picked Up
           </Button>

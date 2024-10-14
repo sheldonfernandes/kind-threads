@@ -5,6 +5,7 @@ import {
   CreateInventoryData,
   InventoryData,
   InventoryListType,
+  UpdateDonation,
   UpdateInventory,
 } from "../types/inventory.type";
 
@@ -57,12 +58,24 @@ export const InventoryService = {
     }).then((res) => res.data);
   },
 
+  updateDonation: async (
+    updateInventory: UpdateDonation
+  ): Promise<InventoryListType> => {
+    const apiEndpoint = new ApiEndpoint();
+    return axios({
+      url: apiEndpoint.UPDATE_DONATION_API(updateInventory.inventory_id),
+      baseURL: apiEndpoint.API_BASE_URL,
+      timeout: AppConst.API_TIMEOUT,
+      method: "PUT",
+      data: updateInventory,
+    }).then((res) => res.data);
+  },
+
   getCollectorInventoryList: async (
     collector_id: string,
     status: string
   ): Promise<InventoryListType> => {
     const apiEndpoint = new ApiEndpoint();
-    console.log(apiEndpoint.COLLECTOR_INVLIST_API(collector_id,status))
     return axios({
       url: apiEndpoint.COLLECTOR_INVLIST_API(collector_id,status),
       baseURL: apiEndpoint.API_BASE_URL,

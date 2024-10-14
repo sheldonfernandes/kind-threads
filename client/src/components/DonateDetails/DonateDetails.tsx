@@ -7,8 +7,8 @@ import { useCreateInventory } from "@/src/hooks/useCreateInventory";
 import { EndpointConst } from "@/src/constants/endpoints.constant";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/src/store/Auth.store";
-import { AppUtil } from "@/src/utils/App.util";
 import AppLoader from "../AppLoader";
+import DonationDetailsConfirmation from "../DonationDetailsConfirmation/DonationDetailsConfirmation";
 
 export const DonateDetails = () => {
   const router = useRouter();
@@ -19,9 +19,6 @@ export const DonateDetails = () => {
   );
 
   const { mutate, data: inventoryData, isPending, isError } = useCreateInventory();
-  const handleClose = () => {
-    router.push(EndpointConst.MARKETPLACE_PAGE);
-  };
 
   const handleGetFile = (imageSource: any) => {
     setImageSource(imageSource);
@@ -68,20 +65,13 @@ export const DonateDetails = () => {
         </div>
       </Form>
       {inventoryData && (
-        <Modal show={true} onHide={handleClose}>
+        <Modal show={true} backdrop="static" keyboard={false}>
           <Modal.Header closeButton>
-            <Modal.Title>Thank you for your contribution</Modal.Title>
+            <Modal.Title>Verify the following details about your donation:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Your item will be picked up before{" "}
-            {new AppUtil().getDate(inventoryData?.picked_up_date)} from the
-            given picked up address
+            <DonationDetailsConfirmation initialData={inventoryData} />
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Okay
-            </Button>
-          </Modal.Footer>
         </Modal>
         
       )}

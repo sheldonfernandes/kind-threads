@@ -3,7 +3,7 @@ import {
   InventoryData,
   InventoryDetailModal,
   InventoryListType,
-  OrganizationStatusEnum,
+  DonationStatusEnum,
 } from "@/src/types/inventory.type";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

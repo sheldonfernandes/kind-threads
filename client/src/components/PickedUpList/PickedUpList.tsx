@@ -3,7 +3,7 @@ import {
   InventoryData,
   InventoryDetailModal,
   InventoryListType,
-  OrganizationStatusEnum,
+  DonationStatusEnum,
 } from "@/src/types/inventory.type";
 import { useState } from "react";
 import {
@@ -32,8 +32,7 @@ export const PickedUpList = (props: Iprops) => {
     setDetailModal({
       showModal: true,
       category: item.category,
-      organization_name: item.organization_name,
-      organization_address: item.organization_address,
+      donation_center_selected: item.donation_center_selected,
       pick_up_address: item.pick_up_address,
       inventory_id: item.inventory_id,
       picked_up_date: item.picked_up_date
@@ -48,9 +47,10 @@ export const PickedUpList = (props: Iprops) => {
   const handleClose = () => setDetailModal({ showModal: false });
 
   const handleDroppedOff = (inventory_id: string | undefined) => {
-    onUpdateStatus( inventory_id || "", OrganizationStatusEnum.RECEIVED);
+    onUpdateStatus( inventory_id || "", DonationStatusEnum.RECEIVED);
     setDetailModal({ showModal: false });
   };
+
   return (
     <Container fluid>
       <Row>
@@ -78,9 +78,9 @@ export const PickedUpList = (props: Iprops) => {
                       </p>
                     </Card.Text>
 
-                    <Button onClick={() => onDetailsClick(item)}>
+                  { (item.donation_status === DonationStatusEnum.PICKED_UP) && <Button onClick={() => onDetailsClick(item)}>
                       Drop Off
-                    </Button>
+                    </Button> }
                   </Card.Body>
                 </Card>
               </Col>
@@ -98,16 +98,12 @@ export const PickedUpList = (props: Iprops) => {
         </Modal.Header>
         <Modal.Body>
           <Row>
-            <Col>Organization Name</Col>
-            <Col>{detailModal?.organization_name}</Col>
+            <Col>Donation Centre</Col>
+            <Col>{detailModal?.donation_center_selected}</Col>
           </Row>
           <Row>
             <Col>Drop off date</Col>
             <Col>{detailModal?.drop_off_date}</Col>
-          </Row>
-          <Row>
-            <Col>Drop off Address</Col>
-            <Col>{detailModal?.organization_address}</Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
