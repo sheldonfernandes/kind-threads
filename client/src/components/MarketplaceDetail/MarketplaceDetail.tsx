@@ -73,12 +73,14 @@ export const MarketplaceDetail = (props: Iprops) => {
                     <Card.Title>{item.category}</Card.Title>
                     <Card.Text>
                       <p>
-                        Status: {item.donation_status}
+                        {item.donation_status === DonationStatusEnum.PENDING &&
+                        <span>Requested to drop off</span>
+                        }
                         <br />
-                        Pickup date:{" "}
-                        {new AppUtil().getDate(item.picked_up_date)}
+                         Listed on:{" "}
+                        {new AppUtil().getDate(item.submitted_date)}
                         <br />
-                        Pickup Address: {item.pick_up_address}
+                        {item.pick_up_address}
                       </p>
                     </Card.Text>
 
@@ -109,10 +111,10 @@ export const MarketplaceDetail = (props: Iprops) => {
             <Col>Pick up Address</Col>
             <Col>{detailModal?.pick_up_address}</Col>
           </Row>
-          <Row>
+         {detailModal.donation_status === DonationStatusEnum.PENDING && <Row>
             <Col>Donation Centre</Col>
             <Col>{detailModal?.donation_center_selected}</Col>
-          </Row>
+          </Row>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

@@ -21,6 +21,7 @@ export type InventoryData = {
   category: string;
   reason_for_category: string;
   green_coins: number;
+  submitted_date:string;
   picked_up_date: string;
   pick_up_address: string;
   donation_center_selected: string;

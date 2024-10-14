@@ -46,7 +46,7 @@ export const UserDonationList = (props: Iprops) => {
   const onDetailsClick = (item: InventoryData) => {
     setDetailModal({
       showModal: true,
-      inventory_id:item.inventory_id,
+      inventory_id: item.inventory_id,
       category: item.category,
       donation_center_selected: item.donation_center_selected,
       pick_up_address: item.pick_up_address,
@@ -62,7 +62,6 @@ export const UserDonationList = (props: Iprops) => {
     onUpdateStatus(inventory_id || "", DonationStatusEnum.RECEIVED);
     setDetailModal({ showModal: false });
   };
-  
 
   return (
     <Container fluid>
@@ -92,16 +91,22 @@ export const UserDonationList = (props: Iprops) => {
                     />
 
                     <Card.Body>
-                      <Card.Title>{item.category}</Card.Title>
+                      <Card.Title>{item.ai_response.short_desc}</Card.Title>
                       <Card.Text>
                         <p>
-                          Status:{" "}
-                          {item.donation_status}
+                          {item.donation_status ===
+                            DonationStatusEnum.PENDING ||
+                          item.donation_status === DonationStatusEnum.SELF_CLAIM
+                            ? "Ready to pickup"
+                            : item.donation_status ===
+                              DonationStatusEnum.PICKED_UP
+                            ? "Item Picked Up"
+                            : "Donated"}
                           <br />
-                          Pickup date:{" "}
+                          Listed on:{" "}
                           {new AppUtil().getDate(item.picked_up_date)}
                           <br />
-                          Pickup Address: {item.pick_up_address}
+                          {item.pick_up_address}
                         </p>
                       </Card.Text>
 

@@ -18,12 +18,12 @@ import {
 import AppLoader from "../AppLoader";
 import { AppUtil } from "@/src/utils/App.util";
 type Iprops = {
-  onUpdateStatus: (inventory_id: string,status:string) => void;
+  onUpdateStatus: (inventory_id: string, status: string) => void;
   pickedUpListData: InventoryListType | undefined;
 };
 
 export const PickedUpList = (props: Iprops) => {
-  const {pickedUpListData,onUpdateStatus} = props;
+  const { pickedUpListData, onUpdateStatus } = props;
   const [detailModal, setDetailModal] = useState<InventoryDetailModal>({
     showModal: false,
   });
@@ -47,7 +47,7 @@ export const PickedUpList = (props: Iprops) => {
   const handleClose = () => setDetailModal({ showModal: false });
 
   const handleDroppedOff = (inventory_id: string | undefined) => {
-    onUpdateStatus( inventory_id || "", DonationStatusEnum.RECEIVED);
+    onUpdateStatus(inventory_id || "", DonationStatusEnum.RECEIVED);
     setDetailModal({ showModal: false });
   };
 
@@ -66,21 +66,28 @@ export const PickedUpList = (props: Iprops) => {
                   />
 
                   <Card.Body>
-                    <Card.Title>{item.category}</Card.Title>
+                    <Card.Title>{item.ai_response.short_desc}</Card.Title>
                     <Card.Text>
                       <p>
-                        Item Picked up
+                        {item.donation_status ===
+                        DonationStatusEnum.SELF_CLAIM_PICKEDUP
+                          ? "Claimed"
+                          : item.donation_status ===
+                            DonationStatusEnum.PICKED_UP
+                          ? "Picked Up"
+                          : "Dropped off"}
                         <br />
-                        Pickup date:{" "}
-                        {new AppUtil().getDate(item.picked_up_date)}
+                        Listed on: {new AppUtil().getDate(item.submitted_date)}
                         <br />
-                        Pickup Address: {item.pick_up_address}
+                        {item.pick_up_address}
                       </p>
                     </Card.Text>
 
-                  { (item.donation_status === DonationStatusEnum.PICKED_UP) && <Button onClick={() => onDetailsClick(item)}>
-                      Drop Off
-                    </Button> }
+                    {item.donation_status === DonationStatusEnum.PICKED_UP && (
+                      <Button onClick={() => onDetailsClick(item)}>
+                        Drop Off
+                      </Button>
+                    )}
                   </Card.Body>
                 </Card>
               </Col>
@@ -100,10 +107,6 @@ export const PickedUpList = (props: Iprops) => {
           <Row>
             <Col>Donation Centre</Col>
             <Col>{detailModal?.donation_center_selected}</Col>
-          </Row>
-          <Row>
-            <Col>Drop off date</Col>
-            <Col>{detailModal?.drop_off_date}</Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
