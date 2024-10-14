@@ -14,7 +14,7 @@ import re
 from datetime import datetime, timedelta
 
 from app.utils.WatsonUtil import get_watsonxai_creds, system_prompt
-from app.utils.AppUtil import get_category
+from app.utils.AppUtil import calculate_stats, get_category
 
 creds = get_watsonxai_creds()
 params = {
@@ -130,13 +130,39 @@ class InventoryService:
     @staticmethod
     def get_marketplaceList():
         try:
-            inventory_list = MongoUtil.get_marketplaceList()
+            inventory_list = MongoUtil.get_latestInventoryList()
             if inventory_list == None:
                 return {"success": False, "errorCode": "EKTU002",
                         "errorMessage": "Inventory not found with org_received_status: {org_received_status}"}
+            inventory_list_with_stats = []
+            for i in inventory_list:
+                i['stats'] = calculate_stats(i)
+                inventory_list_with_stats.append(i)
             return {
                 'success': True,
-                'inventory_list': inventory_list,
+                'inventory_list': inventory_list_with_stats,
+                'errorMessage': None,
+                'errorCode': None
+            }
+        except Exception as e:
+            print(f"Error in inventory service: {e}")
+            print(traceback.format_exc())
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
+    def get_latestInventoryList():
+        try:
+            inventory_list = MongoUtil.get_latestInventoryList()
+            if inventory_list == None:
+                return {"success": False, "errorCode": "EKTU002",
+                        "errorMessage": "Inventory not found with org_received_status: {org_received_status}"}
+            inventory_list_with_stats = []
+            for i in inventory_list:
+                i['stats'] = calculate_stats(i)
+                inventory_list_with_stats.append(i)
+            return {
+                'success': True,
+                'inventory_list': inventory_list_with_stats,
                 'errorMessage': None,
                 'errorCode': None
             }

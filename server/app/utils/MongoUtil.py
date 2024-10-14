@@ -34,6 +34,13 @@ def get_marketplaceList():
     return data
 
 
+def get_latestInventoryList():
+    db = get_database()
+    data = db.get_collection('inventory').find(
+        {}, {'_id': 0}).sort([("submitted_date", -1)]).to_list(100)
+    return data
+
+
 def list_inventory_by_collector_id(collector_id):
     db = get_database()
     data = db.get_collection('inventory').find(
