@@ -14,6 +14,10 @@ router = APIRouter(
 def get_inventory_list():
     return InventoryService.get_marketplaceList()
 
+@router.get("/list_inventory/latest")
+def get_inventory_list_latest():
+    return InventoryService.get_latestInventoryList()
+
 @router.post("/create")
 def create_inventory(inventoryCreateModel: InventoryCreateModel):
     return InventoryService.create_inventory(inventoryCreateModel)
