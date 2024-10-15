@@ -33,7 +33,7 @@ class UserService:
             if inventory_list == None:
                 return {"success": False, "errorCode": "EKTU001",
                         "errorMessage": "User not found with userid: {user_id}"}
-            
+
             return {
                 'success': True,
                 'inventory_list': inventory_list,
@@ -44,7 +44,7 @@ class UserService:
             print(f"Error in user service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=404, detail=str(e))
-        
+
     @staticmethod
     def validate_user(userLoginParams: UserLoginParams):
         try:
@@ -62,8 +62,7 @@ class UserService:
             print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=500, detail=str(e))
-            
-        
+
     @staticmethod
     def register_user(registerUserParams: RegisterUserParams):
         try:
@@ -82,15 +81,18 @@ class UserService:
             print(traceback.format_exc())
             raise HTTPException(status_code=404, detail=str(e))
 
-
     @staticmethod
     def get_dashboard_statistics_by_user_id(user_id):
         try:
             data = MongoUtil.aggregate_inventory_by_user_id(user_id)
-            if data == None:
-                return {"success": False, "errorCode": "EKTU001",
-                        "errorMessage": "No donations found for user"}
-            
+            if data == None or len(data) == 0:
+                return {
+                    'success': True,
+                    'user_data': {'water_saved': 0, 'carbon': 0, 'clothes_donated': 0},
+                    'errorMessage': None,
+                    'errorCode': None
+                }
+
             # Calculate water saved
             WEIGHT_PER_ITEM = .4
             WATER_PER_KG_COTTON = 4000
@@ -98,15 +100,19 @@ class UserService:
             water_saved = 0
             for x in data[0]['details']:
                 if x['isCotton'] == True:
-                    water_saved += x['count'] * WEIGHT_PER_ITEM * WATER_PER_KG_COTTON
+                    water_saved += x['count'] * \
+                        WEIGHT_PER_ITEM * WATER_PER_KG_COTTON
                 if x['isCotton'] == False:
-                    water_saved += x['count'] * WEIGHT_PER_ITEM * WATER_PER_KG_OTHER_CLOTH
+                    water_saved += x['count'] * \
+                        WEIGHT_PER_ITEM * WATER_PER_KG_OTHER_CLOTH
 
             # Calculate Carbon footprint
             CARBON_PER_KG = 10
             carbon = data[0]['total'] * WEIGHT_PER_ITEM * CARBON_PER_KG
 
-            stats  = { 'water_saved': water_saved, 'carbon': carbon, 'clothes_donated': data[0]['total'] }
+            stats = {'water_saved': round(water_saved), 'carbon': round(
+                carbon), 'clothes_donated': data[0]['total']}
+
             return {
                 'success': True,
                 'user_data': stats,

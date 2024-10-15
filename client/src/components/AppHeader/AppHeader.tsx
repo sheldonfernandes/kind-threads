@@ -4,7 +4,7 @@ import { EndpointConst } from "@/src/constants/endpoints.constant";
 import { useAuthStore } from "@/src/store/Auth.store";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 
 export default function AppHeader({ children }: React.PropsWithChildren) {
   const router = useRouter();

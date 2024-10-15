@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import { QueryKey } from "@/src/constants/query-key.constant";
+import { UserService } from "@/src/services/user.service";
+import { useAuthStore } from "@/src/store/Auth.store";
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
 import {
-  Container,
   Card,
   CardBody,
   CardTitle,
@@ -10,8 +13,25 @@ import {
   Col,
   Image,
 } from "react-bootstrap";
+import AppLoader from "../AppLoader";
 
 const Stats = () => {
+  const {userData} = useAuthStore();
+  const {
+    data: userStatsData,
+    isPending: isUserStatsPending,
+    refetch: refetchUserStats,
+  } = useQuery({
+    queryKey: [QueryKey.USER_DASHBOARD_STATS],
+    queryFn: () =>
+      UserService.getUserStats(
+        userData?.user_id || "",
+      ),
+  });
+  useEffect(()=>{
+    refetchUserStats();
+  },[])
+  console.log(userStatsData);
   return (
     <div className="my-3">
       <Row>
@@ -23,11 +43,11 @@ const Stats = () => {
                   <CardTitle className="text-uppercase text-muted mb-0">
                     Carbon Footprints
                   </CardTitle>
-                  <span className="h2 font-weight-bold mb-0">350,897</span>
+                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.carbon}</span>
                 </Col>
                 <Col>
                   <Image
-                    style={{ height: "10rem" }}
+                    style={{ height: "7rem" }}
                     src="/assets/foot-print.png"
                     alt="Carbon Footprint"
                   />
@@ -44,11 +64,11 @@ const Stats = () => {
                   <CardTitle className="text-uppercase text-muted mb-0">
                     Water Saved
                   </CardTitle>
-                  <span className="h2 font-weight-bold mb-0">350,897</span>
+                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.water_saved}</span>
                 </Col>
                 <Col>
                   <Image
-                    style={{ height: "10rem" }}
+                    style={{ height: "7rem" }}
                     src="/assets/droplet.png"
                     alt="Water Saved"
                   />
@@ -65,11 +85,11 @@ const Stats = () => {
                   <CardTitle className="text-uppercase text-muted mb-0">
                     Clothes donated
                   </CardTitle>
-                  <span className="h2 font-weight-bold mb-0">350,897</span>
+                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.clothes_donated}</span>
                 </Col>
                 <Col>
                   <Image
-                    style={{ height: "10rem" }}
+                    style={{ height: "7rem" }}
                     src="/assets/clothes.png"
                     alt="Clothes Donated"
                   />
@@ -79,6 +99,7 @@ const Stats = () => {
           </Card>
         </Col>
       </Row>
+      {isUserStatsPending && <AppLoader/>}
     </div>
   );
 };

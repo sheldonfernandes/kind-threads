@@ -27,3 +27,16 @@ export type LoginResponse = {
   errorMessage: string;
   errorCode: string;
 };
+
+export type UserStats = {
+  water_saved: number,
+  carbon: number,
+  clothes_donated: number
+}
+
+export type UserStatsResponse = {
+  success: boolean,
+  user_data: UserStats,
+  errorMessage: string | null,
+  errorCode: string | null
+}

@@ -1,8 +1,7 @@
 import axios from "axios";
 import { ApiEndpoint } from "../constants/api-endpoints.constant";
 import { AppConst } from "../constants/app.constant";
-import { CreateInventoryData, InventoryData, UserDonationInventoryListType } from "../types/inventory.type";
-import { LoginData, LoginResponse } from "../types/user.type";
+import { LoginData, LoginResponse, UserStatsResponse } from "../types/user.type";
 
 export const UserService = {
 
@@ -16,6 +15,17 @@ export const UserService = {
       timeout: AppConst.API_TIMEOUT,
       method: "POST",
       data: loginData
+    }).then((res) => res.data);
+  },
+  getUserStats: async (
+    userId: string,
+  ): Promise<UserStatsResponse> => {
+    const apiEndpoint = new ApiEndpoint();
+    return axios({
+      url: apiEndpoint.USER_STATS_API(userId),
+      baseURL: apiEndpoint.API_BASE_URL,
+      timeout: AppConst.API_TIMEOUT,
+      method: "GET",
     }).then((res) => res.data);
   },
 };
