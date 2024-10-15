@@ -11,9 +11,6 @@ import {
   Row,
 } from "react-bootstrap";
 import { EndpointConst } from "@/src/constants/endpoints.constant";
-import { QueryKey } from "@/src/constants/query-key.constant";
-import { InventoryService } from "@/src/services/inventory.service";
-import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/src/store/Auth.store";
 import {
   InventoryData,
@@ -21,9 +18,9 @@ import {
   InventoryListType,
   DonationStatusEnum,
 } from "@/src/types/inventory.type";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AppUtil } from "@/src/utils/App.util";
-import AppLoader from "../AppLoader";
+import { GeoAltFill } from "react-bootstrap-icons";
 
 type Iprops = {
   onUpdateStatus: (inventory_id: string, status: string) => void;
@@ -66,13 +63,16 @@ export const UserDonationList = (props: Iprops) => {
   return (
     <Container fluid>
       <Row>
-        <Col>
+        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+        <span style={{display: "flex",alignItems: "center"}}><GeoAltFill fill="red" /> {userData?.address}</span>  
+        </Col>
+        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
           <Button
             className="float-end my-3"
             variant="success"
             onClick={onDonationClick}
           >
-            Donate Clothes
+            Donate
           </Button>
         </Col>
       </Row>

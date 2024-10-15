@@ -31,7 +31,6 @@ const Stats = () => {
   useEffect(()=>{
     refetchUserStats();
   },[])
-  console.log(userStatsData);
   return (
     <div className="my-3">
       <Row>
