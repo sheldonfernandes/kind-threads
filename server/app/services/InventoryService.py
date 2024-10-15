@@ -130,7 +130,7 @@ class InventoryService:
     @staticmethod
     def get_marketplaceList():
         try:
-            inventory_list = MongoUtil.get_latestInventoryList()
+            inventory_list = MongoUtil.get_marketplaceList()
             if inventory_list == None:
                 return {"success": False, "errorCode": "EKTU002",
                         "errorMessage": "Inventory not found with org_received_status: {org_received_status}"}

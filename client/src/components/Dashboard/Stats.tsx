@@ -43,7 +43,7 @@ const Stats = () => {
                   <CardTitle className="text-uppercase text-muted mb-0">
                     Carbon Footprints
                   </CardTitle>
-                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.carbon}</span>
+                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.carbon} kgco2e</span>
                 </Col>
                 <Col>
                   <Image
@@ -64,7 +64,7 @@ const Stats = () => {
                   <CardTitle className="text-uppercase text-muted mb-0">
                     Water Saved
                   </CardTitle>
-                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.water_saved}</span>
+                  <span className="h2 font-weight-bold mb-0">{userStatsData?.user_data.water_saved} gallons</span>
                 </Col>
                 <Col>
                   <Image

@@ -57,7 +57,7 @@ export const PickedUpList = (props: Iprops) => {
         {pickedUpListData && pickedUpListData.inventory_list?.length ? (
           <Row>
             {pickedUpListData?.inventory_list.map((item: InventoryData) => (
-              <Col xs={12} sm={6} md={4} lg={4} xl={4}>
+              <Col xs={12} sm={6} md={3} lg={3} xl={3}>
                 <Card className="my-3 mx-3">
                   <Card.Img
                     style={{ height: "15rem" }}

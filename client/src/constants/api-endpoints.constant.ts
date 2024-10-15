@@ -8,6 +8,7 @@ export class ApiEndpoint {
   UPDATE_DONATION_API: (inventory_id: string) => string;
   COLLECTOR_INVLIST_API: (collector_id: string, status: string) => string;
   USER_STATS_API : (userId: string) => string;
+  USER_FEED : string
 
   constructor() {
     this.API_BASE_URL = process.env.NEXT_PUBLIC_API_ROOT_PATH || "";
@@ -24,5 +25,6 @@ export class ApiEndpoint {
       `/collector/${collector_id}/inventory_list?status=${status}`;
     this.USER_STATS_API = (userId: string) =>
       `/user/${userId}/dashboard_statistics/`;
+    this.USER_FEED = `/inventory/list_inventory/latest`
   }
 }

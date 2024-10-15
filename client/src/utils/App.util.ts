@@ -22,4 +22,14 @@ export class AppUtil {
     }
     return null
   }
+
+  getDateTime(date :string | undefined) {
+    if(date )
+    {
+      var fullDate = new Date(Date.parse(date));
+      return fullDate.toLocaleString('en-US', {day:'numeric', month:"short", year:"numeric", hour: 'numeric', minute: 'numeric', hour12: true }); 
+
+    }
+    return null
+  }
 }

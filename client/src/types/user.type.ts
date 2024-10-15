@@ -1,3 +1,5 @@
+import { InventoryData } from "./inventory.type";
+
 export type UserData = {
   user_id: string;
   user_name: string;
@@ -37,6 +39,13 @@ export type UserStats = {
 export type UserStatsResponse = {
   success: boolean,
   user_data: UserStats,
+  errorMessage: string | null,
+  errorCode: string | null
+}
+
+export type UserFeedResponse = {
+  success: boolean,
+  inventory_list: InventoryData[],
   errorMessage: string | null,
   errorCode: string | null
 }

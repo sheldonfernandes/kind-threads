@@ -30,6 +30,11 @@ export type InventoryData = {
   collector_name: string;
   drop_off_date: string;
   ai_response: AIresponse;
+  stats: {
+    water_saved: number,
+    carbon: number,
+    clothes_donated: number
+  }
 };
 
 export enum DonationStatusEnum {
