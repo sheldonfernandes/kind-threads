@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Alert, Button, Container, Form, Modal, Row } from "react-bootstrap";
+import { Alert, Button, Container, Form, Modal } from "react-bootstrap";
 import UploadFiles from "./UploadFiles";
 import { useCreateInventory } from "@/src/hooks/useCreateInventory";
-import { EndpointConst } from "@/src/constants/endpoints.constant";
-import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/src/store/Auth.store";
 import AppLoader from "../AppLoader";
 import DonationDetailsConfirmation from "../DonationDetailsConfirmation/DonationDetailsConfirmation";
+// import withAuth from "../ProtectedRoute";
 
 export const DonateDetails = () => {
-  const router = useRouter();
   const { userData } = useAuthStore();
   const [imageSource, setImageSource] = useState<string>("");
   const [pickUpAddress, setPickUpAddress] = useState<string>(

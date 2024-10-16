@@ -17,9 +17,9 @@ const sampleFileProps = {
 
 export default function DropItems() {
   const [imageSrc, setImageSrc] = React.useState(undefined);
-  const [date, setDate] = React.useState(undefined);
+  const [date, setDate] = React.useState<string>();
 
-  const handleSee = (imageSource) => {
+  const handleSee = (imageSource:any) => {
     setImageSrc(imageSource);
   };
 

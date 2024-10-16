@@ -20,8 +20,8 @@ export const UserFeeds = () => {
   }, []);
   return (
     <>
-      {userFeedData?.inventory_list.map((item) => (
-        <Card className="my-3">
+      {userFeedData?.inventory_list.map((item,index) => (
+        <Card className="my-3" key={index}>
           <Card.Body>
             <Row>
               <Col xs={12}></Col>
@@ -35,6 +35,7 @@ export const UserFeeds = () => {
                     style={{ width: "4rem" }}
                     rounded
                     roundedCircle
+                    alt="Avatar"
                   />{" "}
                   <div className="ms-3">
                     <Card.Title className="fs-5">{item.user_name}</Card.Title>
@@ -55,6 +56,7 @@ export const UserFeeds = () => {
                 <Image
                   style={{ width: "12rem", height: "12rem" }}
                   src={item.material_image}
+                  alt="Clothing Item"
                 />
               </Col>
             </Row>
