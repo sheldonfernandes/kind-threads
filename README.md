@@ -153,7 +153,7 @@ build the package:
 yarn build
 ```
 
-run the server:
+run the client:
 
 ```bash
 yarn start
