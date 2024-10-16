@@ -4,7 +4,7 @@ import { EndpointConst } from "@/src/constants/endpoints.constant";
 import { useAuthStore } from "@/src/store/Auth.store";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Button, Image } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 export default function AppHeader({ children }: React.PropsWithChildren) {
   const router = useRouter();
@@ -22,14 +22,6 @@ export default function AppHeader({ children }: React.PropsWithChildren) {
   }
   return (
     <>
-      {/* <Navbar bg="primary" data-bs-theme="dark">
-        <Container>
-          <Navbar.Brand href="/">Kind Threads</Navbar.Brand>
-          <Nav classNameName="me-auto">
-            <Nav.Link href="/donation">Donation</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar> */}
       <header>
         <div className="px-3 py-2 bg-success bg-gradient text-white">
           <div className="container">

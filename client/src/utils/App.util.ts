@@ -10,11 +10,11 @@ export class AppUtil {
   getDate(date :string | undefined) {
     if(date )
     {
-      var fullDate = new Date(Date.parse(date));
-      var twoDigitMonth = fullDate.getMonth() + "";
+      const fullDate = new Date(Date.parse(date));
+      let twoDigitMonth = fullDate.getMonth() + "";
       if (twoDigitMonth.length == 1)
           twoDigitMonth = "0" + twoDigitMonth;
-      var twoDigitDate = fullDate.getDate() + "";
+      let twoDigitDate = fullDate.getDate() + "";
       if (twoDigitDate.length == 1)
           twoDigitDate = "0" + twoDigitDate;
       return twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear(); 
@@ -26,7 +26,7 @@ export class AppUtil {
   getDateTime(date :string | undefined) {
     if(date )
     {
-      var fullDate = new Date(Date.parse(date));
+      const fullDate = new Date(Date.parse(date));
       return fullDate.toLocaleString('en-US', {day:'numeric', month:"short", year:"numeric", hour: 'numeric', minute: 'numeric', hour12: true }); 
 
     }

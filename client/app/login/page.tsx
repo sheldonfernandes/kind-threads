@@ -1,10 +1,8 @@
 "use client";
 import LoginComponent from "@/src/components/LoginComponent/LoginComponent";
 
-export const Login = () => {
+export default function Page() {
   return (
     <LoginComponent/>
   );
 };
-
-export default Login;

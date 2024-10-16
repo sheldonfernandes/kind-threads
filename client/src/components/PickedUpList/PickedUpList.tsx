@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/src/store/Auth.store";
 import {
   InventoryData,
   InventoryDetailModal,
@@ -15,7 +14,6 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-import AppLoader from "../AppLoader";
 import { AppUtil } from "@/src/utils/App.util";
 type Iprops = {
   onUpdateStatus: (inventory_id: string, status: string) => void;
@@ -56,42 +54,46 @@ export const PickedUpList = (props: Iprops) => {
       <Row>
         {pickedUpListData && pickedUpListData.inventory_list?.length ? (
           <Row>
-            {pickedUpListData?.inventory_list.map((item: InventoryData) => (
-              <Col xs={12} sm={6} md={3} lg={3} xl={3}>
-                <Card className="my-3 mx-3">
-                  <Card.Img
-                    style={{ height: "15rem" }}
-                    variant="top"
-                    src={item.material_image}
-                  />
+            {pickedUpListData?.inventory_list.map(
+              (item: InventoryData, index: number) => (
+                <Col xs={12} sm={6} md={3} lg={3} xl={3} key={index}>
+                  <Card className="my-3 mx-3">
+                    <Card.Img
+                      style={{ height: "15rem" }}
+                      variant="top"
+                      src={item.material_image}
+                    />
 
-                  <Card.Body>
-                    <Card.Title>{item.ai_response.short_desc}</Card.Title>
-                    <Card.Text>
-                      <p>
-                        {item.donation_status ===
-                        DonationStatusEnum.SELF_CLAIM_PICKEDUP
-                          ? "Claimed"
-                          : item.donation_status ===
-                            DonationStatusEnum.PICKED_UP
-                          ? "Picked Up"
-                          : "Dropped off"}
-                        <br />
-                        Listed on: {new AppUtil().getDate(item.submitted_date)}
-                        <br />
-                        {item.pick_up_address}
-                      </p>
-                    </Card.Text>
+                    <Card.Body>
+                      <Card.Title>{item.ai_response.short_desc}</Card.Title>
+                      <Card.Text>
+                        <p>
+                          {item.donation_status ===
+                          DonationStatusEnum.SELF_CLAIM_PICKEDUP
+                            ? "Claimed"
+                            : item.donation_status ===
+                              DonationStatusEnum.PICKED_UP
+                            ? "Picked Up"
+                            : "Dropped off"}
+                          <br />
+                          Listed on:{" "}
+                          {new AppUtil().getDate(item.submitted_date)}
+                          <br />
+                          {item.pick_up_address}
+                        </p>
+                      </Card.Text>
 
-                    {item.donation_status === DonationStatusEnum.PICKED_UP && (
-                      <Button onClick={() => onDetailsClick(item)}>
-                        Drop Off
-                      </Button>
-                    )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
+                      {item.donation_status ===
+                        DonationStatusEnum.PICKED_UP && (
+                        <Button onClick={() => onDetailsClick(item)}>
+                          Drop Off
+                        </Button>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </Col>
+              )
+            )}
           </Row>
         ) : (
           <Alert key="info" variant="info">

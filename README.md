@@ -147,11 +147,16 @@ install dependencies
 yarn install
 ```
 
-
- run the development server:
+build the package:
 
 ```bash
-yarn dev
+yarn build
+```
+
+run the server:
+
+```bash
+yarn start
 ```
 
 
