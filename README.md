@@ -83,7 +83,7 @@ By combining these technologies, Kind Threads is not only reducing environmental
 
 Diagram and step-by-step description of the flow of our solution:
 
-![Video transcription/translaftion app](https://developer.ibm.com/developer/tutorials/cfc-starter-kit-speech-to-text-app-example/images/cfc-covid19-remote-education-diagram-2.png)
+![Video transcription/translaftion app](./kindthreads-architecture.png)
 
 1. User Uploads a Picture: Users use their camera to take a photo of an item they wish to recycle or donate.
 2. Item Identification: Watsonx.AI processes the image to identify the type of clothing and assess its condition.
@@ -93,8 +93,6 @@ Diagram and step-by-step description of the flow of our solution:
 6. Gamification and Impact Tracking: Users earn rewards and track their environmental impact via the app, motivating continued participation.
 
 ## Presentation materials
-
-_INSTRUCTIONS: The following deliverables should be officially posted to your My Team > Submissions section of the [Call for Code Global Challenge resources site](https://cfc-prod.skillsnetwork.site/), but you can also include them here for completeness. Replace the examples seen here with your own deliverable links._
 
 ### Solution demo video
 
@@ -111,53 +109,61 @@ The project currently does the following things:
 - Gamification: Tracks user impact and encourages continued participation through rewards.
 
 In the future we plan to...
-- Expand the scope beyond cloth recycling to anything that is recyclable
+
+<!-- - Expand the scope beyond cloth recycling to anything that is recyclable
 - Easier access to the application by making it available on social channels like Facebook Messenger and Whatsapp
 - Integrate language support for broader global use.
 - Create partnerships with larger recycling organizations and clothing brands.
 - Further develop the micro-economy to include more underserved communities.
 
-See below for our proposed schedule on next steps after Call for Code 2024 submission.
+See below for our proposed schedule on next steps after Call for Code 2024 submission. -->
 
-![Roadmap](./images/roadmap.jpg)
+![Roadmap](./kindthreads-roadmap.png)
 
 
 ### How to run the project
 
-INSTRUCTIONS: In this section you add the instructions to run your project on your local machine for development and testing purposes. You can also add instructions on how to deploy the project in production.
+#### Start the  backend API
+1. Create virtual environemt by running following commands
+```
+py -m venv server
+source server/bin/activate
+```
 
-### Live demo
+2. Install dependencies
 
-You can find a running system to test at...
+```
+pip install -r requirements.txt
+```
 
-See our [description document](./docs/DESCRIPTION.md) for log in credentials.
+3. Start the API server
+```
+uvicorn app.main:app --reload
+```
 
----
+#### Start the  frontend UI
+install dependencies
+```bash
+yarn install
+```
 
-_INSTRUCTIONS: You can remove the below section from your specific project README._
+build the package:
 
-## About this template
+```bash
+yarn build
+```
 
-### Contributing
+run the client:
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+```bash
+yarn start
+```
 
-### Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ### Authors
 
-<a href="https://github.com/Call-for-Code/Project-Sample/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=Call-for-Code/Project-Sample" />
-</a>
-
-- **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
-
-### License
-
-This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE) file for details.
-
-### Acknowledgments
-
-- Based on [Billie Thompson's README template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2).
+- [Purva Naik](https://github.com/purva2412)
+- [Sheldon Fernandes](https://github.com/sheldonfernandes)
+- [Shreya Pimprikar](https://github.com/ShreyaPimprikar)
+- [Sanket Phansekar](https://github.com/sanketphansekar)
+- [Suresh Nikuliya](https://github.com/SureshNikuliya)

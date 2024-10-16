@@ -1,4 +1,3 @@
-import { useCreateInventory } from "@/src/hooks/useCreateInventory";
 import { useUpdateDonation } from "@/src/hooks/useUpdateDonation";
 import { useAuthStore } from "@/src/store/Auth.store";
 import {
@@ -12,20 +11,6 @@ import { FaRecycle } from "react-icons/fa"; // Import the recycle icon from reac
 import AppLoader from "../AppLoader";
 import { EndpointConst } from "@/src/constants/endpoints.constant";
 import { useRouter } from "next/navigation";
-
-interface DonationDetails {
-  short_desc: string;
-  type: string;
-  brand: string;
-  size: string;
-  condition: string;
-  material: string;
-  recommendation: string;
-  donation_centers: string[];
-  donation_center?: string; // Optional, for radio button selection
-  donation_type?: string; // Optional, for donation method
-}
-
 interface DonationDetailsConfirmationProps {
   initialData: InventoryData;
 }

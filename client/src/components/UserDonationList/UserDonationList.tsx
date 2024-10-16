@@ -64,7 +64,9 @@ export const UserDonationList = (props: Iprops) => {
     <Container fluid>
       <Row>
         <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-        <span style={{display: "flex",alignItems: "center"}}><GeoAltFill fill="red" /> {userData?.address}</span>  
+          <span style={{ display: "flex", alignItems: "center" }}>
+            <GeoAltFill fill="red" /> {userData?.address}
+          </span>
         </Col>
         <Col xs={6} sm={6} md={6} lg={6} xl={6}>
           <Button
@@ -81,8 +83,8 @@ export const UserDonationList = (props: Iprops) => {
         userDonationInventoryListData.inventory_list.length ? (
           <Row>
             {userDonationInventoryListData?.inventory_list.map(
-              (item: InventoryData) => (
-                <Col xs={12} sm={6} md={4} lg={3} xl={3}>
+              (item: InventoryData, index: number) => (
+                <Col xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
                   <Card className="my-3 mx-3">
                     <Card.Img
                       style={{ height: "18rem" }}

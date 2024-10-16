@@ -60,37 +60,40 @@ export const MarketplaceDetail = (props: Iprops) => {
       <Row>
         {markeplaceListData && markeplaceListData.inventory_list.length ? (
           <Row>
-            {markeplaceListData?.inventory_list.map((item: InventoryData) => (
-              <Col xs={12} sm={6} md={3} lg={3} xl={3}>
-                <Card className="my-3 mx-3">
-                  <Card.Img
-                    style={{ height: "15rem" }}
-                    variant="top"
-                    src={item.material_image}
-                  />
+            {markeplaceListData?.inventory_list.map(
+              (item: InventoryData, index: number) => (
+                <Col xs={12} sm={6} md={3} lg={3} xl={3} key={index}>
+                  <Card className="my-3 mx-3">
+                    <Card.Img
+                      style={{ height: "15rem" }}
+                      variant="top"
+                      src={item.material_image}
+                    />
 
-                  <Card.Body>
-                    <Card.Title>{item.ai_response.short_desc}</Card.Title>
-                    <Card.Text>
-                      <p>
-                        {item.donation_status === DonationStatusEnum.PENDING &&
-                        <span>Requested to drop off</span>
-                        }
-                        <br />
-                         Listed on:{" "}
-                        {new AppUtil().getDate(item.submitted_date)}
-                        <br />
-                        {item.pick_up_address}
-                      </p>
-                    </Card.Text>
+                    <Card.Body>
+                      <Card.Title>{item.ai_response.short_desc}</Card.Title>
+                      <Card.Text>
+                        <p>
+                          {item.donation_status ===
+                            DonationStatusEnum.PENDING && (
+                            <span>Requested to drop off</span>
+                          )}
+                          <br />
+                          Listed on:{" "}
+                          {new AppUtil().getDate(item.submitted_date)}
+                          <br />
+                          {item.pick_up_address}
+                        </p>
+                      </Card.Text>
 
-                    <Button onClick={() => onDetailsClick(item)}>
-                      Pick up
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
+                      <Button onClick={() => onDetailsClick(item)}>
+                        Pick up
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              )
+            )}
           </Row>
         ) : (
           <Alert key="info" variant="info">
@@ -111,10 +114,12 @@ export const MarketplaceDetail = (props: Iprops) => {
             <Col>Pick up Address</Col>
             <Col>{detailModal?.pick_up_address}</Col>
           </Row>
-         {detailModal.donation_status === DonationStatusEnum.PENDING && <Row>
-            <Col>Donation Centre</Col>
-            <Col>{detailModal?.donation_center_selected}</Col>
-          </Row>}
+          {detailModal.donation_status === DonationStatusEnum.PENDING && (
+            <Row>
+              <Col>Donation Centre</Col>
+              <Col>{detailModal?.donation_center_selected}</Col>
+            </Row>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
