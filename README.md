@@ -17,13 +17,7 @@
   - [Project development roadmap](#project-development-roadmap)
 - [Additional details](#additional-details)
   - [How to run the project](#how-to-run-the-project)
-  - [Live demo](#live-demo)
-- [About this template](#about-this-template)
-  - [Contributing](#contributing)
-  - [Versioning](#versioning)
-  - [Authors](#authors)
-  - [License](#license)
-  - [Acknowledgments](#acknowledgments)
+- [Authors](#authors)
 
 ## Project summary
 
@@ -161,7 +155,7 @@ yarn start
 ```
 
 
-### Authors
+## Authors
 
 - [Purva Naik](https://github.com/purva2412)
 - [Sheldon Fernandes](https://github.com/sheldonfernandes)
