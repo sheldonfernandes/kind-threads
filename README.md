@@ -123,17 +123,37 @@ See below for our proposed schedule on next steps after Call for Code 2024 submi
 
 ### How to run the project
 
-INSTRUCTIONS: In this section you add the instructions to run your project on your local machine for development and testing purposes. You can also add instructions on how to deploy the project in production.
+#### Start the  backend API
+1. Create virtual environemt by running following commands
+```
+py -m venv server
+source server/bin/activate
+```
 
-### Live demo
+2. Install dependencies
 
-You can find a running system to test at...
+```
+pip install -r requirements.txt
+```
 
-See our [description document](./docs/DESCRIPTION.md) for log in credentials.
+3. Start the API server
+```
+uvicorn app.main:app --reload
+```
 
----
+#### Start the  frontend UI
+install dependencies
+```bash
+yarn install
+```
 
-_INSTRUCTIONS: You can remove the below section from your specific project README._
+
+ run the development server:
+
+```bash
+yarn dev
+```
+
 
 ### Authors
 
