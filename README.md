@@ -23,7 +23,7 @@
 
 ### The issue we are hoping to solve
 
-Many used clothes end up in landfills, contributing to environmental pollution, carbon emissions, and water wastage. At the same time, many vulnerable groups lack access to sustainable livelihoods. Our solution aims to address both these issues by promoting recycling of used clothes and creating income opportunities for underserved communities.
+Many used clothes end up in landfills, contributing to environmental pollution, carbon emissions, and water wastage. At the same time, many vulnerable groups lack access to sustainable livelihoods. Our solution aims to address both these issues by promoting recycling of used clothes while creates sustainable livelihoods and income opportunities for underserved communities. This platform while facilitating users to donate on a marketplace, also allows low-income workers to earn a wage for picking up and delivering the items to a recycle centers thereby fostering sustainable livelihoods income opportunities and ensuring equitable access for all.
 
 ### How our technology solution can help
 
@@ -41,7 +41,7 @@ The core of our solution is an AI-driven identification system that assesses the
 
 The app promotes environmental sustainability by gamifying the experience for end users. Each item they donate or recycle adds to their personal impact statistics, which display the cumulative environmental benefits they’ve contributed—such as the amount of carbon prevented or water conserved. These tangible metrics help motivate users to participate in the circular economy.
 
-Additionally, our solution tackles social equity by creating micro-economic opportunities for low-wage workers and vulnerable groups. Through the platform, these individuals can sign up as pickup and delivery agents, earning money by collecting and delivering items to recycling centers or donation hubs. This helps bridge the gap between environmental sustainability and economic inclusion, offering these workers a sustainable income stream.
+Additionally, our solution tackles social equity by creating micro-economic opportunities for low-wage workers and vulnerable groups. Through the platform, these individuals can sign up as pickup and delivery volunteers allowing them to  earn money by collecting and delivering items to recycling centers or donation hubs. This helps bridge the gap between environmental sustainability and economic inclusion, offering these workers a sustainable income stream.
 
 Our platform is built using cutting-edge technologies:
 
