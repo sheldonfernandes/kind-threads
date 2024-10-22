@@ -23,7 +23,7 @@
 
 ### The issue we are hoping to solve
 
-Many used clothes end up in landfills, contributing to environmental pollution, carbon emissions, and water wastage. At the same time, many vulnerable groups lack access to sustainable livelihoods. Our solution aims to address both these issues by promoting recycling of used clothes while creates sustainable livelihoods and income opportunities for underserved communities. This platform while facilitating users to donate on a marketplace, also allows low-income workers to earn a wage for picking up and delivering the items to a recycle centers thereby fostering sustainable livelihoods income opportunities and ensuring equitable access for all.
+Many used clothes end up in landfills, contributing to environmental pollution, carbon emissions, and water wastage. At the same time, many vulnerable groups lack access to sustainable livelihoods. Our solution aims to address both these issues by promoting recycling of used clothes while creating sustainable livelihoods and income opportunities for underserved communities. This platform facilitates users to donate on a marketplace and also allows low-income workers to earn a wage through delivering these items to recycle centers thereby fostering sustainable livelihoods income opportunities.
 
 ### How our technology solution can help
 
