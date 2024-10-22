@@ -41,7 +41,7 @@ The core of our solution is an AI-driven identification system that assesses the
 
 The app promotes environmental sustainability by gamifying the experience for end users. Each item they donate or recycle adds to their personal impact statistics, which display the cumulative environmental benefits they’ve contributed—such as the amount of carbon prevented or water conserved. These tangible metrics help motivate users to participate in the circular economy.
 
-Additionally, our solution tackles social equity by creating micro-economic opportunities for low-wage workers and vulnerable groups. Through the platform, these individuals can sign up as pickup and delivery volunteers allowing them to  earn money by collecting and delivering items to recycling centers or donation hubs. This helps bridge the gap between environmental sustainability and economic inclusion, offering these workers a sustainable income stream.
+Additionally, our solution tackles social equity by creating micro-economic opportunities for low-wage workers and vulnerable groups. Through the platform, these individuals can sign up as pickup and delivery volunteers allowing them to  earn money by collecting and delivering items to recycling centers or donation hubs thereby fostering sustainable livelihoods income opportunities and ensuring equitable access for all. This helps bridge the gap between environmental sustainability and economic inclusion, offering these workers a sustainable income stream.
 
 Our platform is built using cutting-edge technologies:
 
