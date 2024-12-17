@@ -4,9 +4,6 @@ from fastapi import HTTPException
 
 from app.utils import MongoUtil
 from app.models.User import RegisterUserParams, UserLoginParams
-import json
-
-
 class UserService:
     @staticmethod
     def fetch_user_profile(userid):

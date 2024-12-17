@@ -39,7 +39,6 @@ class InventoryService:
         inventory.submitted_date = str(datetime.now())
 
         user_query = human_prompt()
-        print(inventoryCreateModel.material_image)
 
         messages = augment_api_request_body(
             user_query, inventoryCreateModel.material_image)
@@ -52,13 +51,9 @@ class InventoryService:
         ai_response = json.loads(data_string)
 
         category = get_category(ai_response_from_model)
-        # organization_data = MongoUtil.get_organization(category.lower())
 
         inventory.category = category
         inventory.reason_for_category = ai_response["recommendation"]
-        # inventory.organization_id = organization_data["organization_id"]
-        # inventory.organization_name = organization_data["organization_name"]
-        # inventory.organization_address = organization_data["address"]
 
         # Default values while creating new inventory item
         inventory.green_coins = 10
@@ -66,8 +61,6 @@ class InventoryService:
         inventory.donation_status = "pending"
         inventory.ai_response = ai_response
         inventory.fabric_type = ai_response["material"]
-
-        # print(inventory.model_dump())
         try:
             response = MongoUtil.create_new_inventory(inventory.model_dump())
             return response
