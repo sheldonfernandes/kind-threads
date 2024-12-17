@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { AppUtil } from "@/src/utils/App.util";
 import { GeoAltFill } from "react-bootstrap-icons";
-
+import "./userDonationList.css";
 type Iprops = {
   onUpdateStatus: (inventory_id: string, status: string) => void;
   userDonationInventoryListData: InventoryListType | undefined;
@@ -93,7 +93,12 @@ export const UserDonationList = (props: Iprops) => {
                     />
 
                     <Card.Body>
-                      <Card.Title>{item.ai_response.short_desc}</Card.Title>
+                      <Card.Title
+                        className="cardTitle1"
+                        title={item.ai_response.short_desc}
+                      >
+                        {item.ai_response.short_desc}
+                      </Card.Title>
                       <Card.Text>
                         <p>
                           {item.donation_status ===

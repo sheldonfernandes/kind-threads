@@ -1,41 +1,31 @@
 import traceback
 import uuid
-import random
 
 from fastapi import HTTPException
-from langchain_core.prompts import ChatPromptTemplate
-from langchain.schema import HumanMessage, SystemMessage
-from ibm_watsonx_ai.metanames import GenTextParamsMetaNames
 from app.models.Inventory import InventoryModel, InventoryCreateModel, InventoryUpdateModel, InventoryUpdateStatusModel
 from app.utils import MongoUtil
-from langchain_ibm import WatsonxLLM
 import json
 import re
 from datetime import datetime, timedelta
-
-from app.utils.WatsonUtil import get_watsonxai_creds, system_prompt
+from app.utils.WatsonUtil import augment_api_request_body, get_watsonxai_creds, human_prompt
 from app.utils.AppUtil import calculate_stats, get_category
+from ibm_watsonx_ai.foundation_models import ModelInference
+from ibm_watsonx_ai import Credentials
 
 creds = get_watsonxai_creds()
-params = {
-    GenTextParamsMetaNames.DECODING_METHOD: "sample",
-    GenTextParamsMetaNames.MAX_NEW_TOKENS: 300,
-    GenTextParamsMetaNames.MIN_NEW_TOKENS: 60,
-    GenTextParamsMetaNames.TEMPERATURE: 0,
-    GenTextParamsMetaNames.TOP_K: 10,
-    GenTextParamsMetaNames.TOP_P: 0,
-    GenTextParamsMetaNames.REPETITION_PENALTY: 1.2,
-    GenTextParamsMetaNames.RANDOM_SEED: 10
-}
-watsonx_llm = WatsonxLLM(
-    # model_id="meta-llama/llama-3-2-90b-vision-instruct",
-    model_id="mistralai/mistral-large",
+credentials = Credentials(
     url=creds["url"],
-    apikey=creds["apikey"],
-    project_id=creds["projectid"],
-    params=params,
-    streaming=False,
+    api_key=creds["apikey"]
 )
+watsonx_llm = ModelInference(
+    model_id="meta-llama/llama-3-2-90b-vision-instruct",
+    credentials=credentials,
+    project_id=creds["projectid"],
+    params={
+        "max_tokens": 1000
+    },
+)
+
 
 class InventoryService:
     @staticmethod
@@ -48,35 +38,24 @@ class InventoryService:
         inventory.pick_up_address = inventoryCreateModel.pick_up_address
         inventory.submitted_date = str(datetime.now())
 
-        # Below feilds wil be assigned by watsonxai based date recived from user
+        user_query = human_prompt()
+        print(inventoryCreateModel.material_image)
 
+        messages = augment_api_request_body(
+            user_query, inventoryCreateModel.material_image)
+        response = watsonx_llm.chat(messages=messages)
+        ai_response_from_model = response['choices'][0]['message']['content']
 
-        chat_prompt_template = ChatPromptTemplate.from_messages(
-                messages=[
-                    SystemMessage(content=system_prompt()),
-                    HumanMessage(content=[
-                        {"type": "image_url",
-                         "image_url": {"url": inventoryCreateModel.material_image}}
-                        # {"type": "text", "text": f"Select either donate or recycle or upcycle for the shown in the image?"}
-                    ])
-                ]
-            )
-
-        chain = chat_prompt_template | watsonx_llm
-
-        category_reason = chain.invoke({})
-        
-        print(" = ================= AI response =================")
         pattern = r'\{.*?\}'
-        data_string = re.search(pattern, category_reason, re.DOTALL).group()
+        data_string = re.search(
+            pattern, ai_response_from_model, re.DOTALL).group()
         ai_response = json.loads(data_string)
-        
-        category = get_category(category_reason)
+
+        category = get_category(ai_response_from_model)
         # organization_data = MongoUtil.get_organization(category.lower())
-        
-        
+
         inventory.category = category
-        inventory.reason_for_category = category_reason
+        inventory.reason_for_category = ai_response["recommendation"]
         # inventory.organization_id = organization_data["organization_id"]
         # inventory.organization_name = organization_data["organization_name"]
         # inventory.organization_address = organization_data["address"]
@@ -91,42 +70,42 @@ class InventoryService:
         # print(inventory.model_dump())
         try:
             response = MongoUtil.create_new_inventory(inventory.model_dump())
-            # print(response)
             return response
         except Exception as e:
             print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=500, detail=str(e))
-        
-
 
     @staticmethod
     def update_inventory(inventory_id: str, inventoryUpdateModel: InventoryUpdateModel):
         try:
-            response = MongoUtil.update_inventory(inventory_id, inventoryUpdateModel)
+            response = MongoUtil.update_inventory(
+                inventory_id, inventoryUpdateModel)
             return response
         except Exception as e:
             print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
-            raise HTTPException(status_code=500, detail=str(e))  
-        
+            raise HTTPException(status_code=500, detail=str(e))
+
     @staticmethod
     def update_inventory_status(inventory_id: str, inventoryUpdateModel: InventoryUpdateStatusModel):
 
         current_date: datetime = datetime.now()
         if (inventoryUpdateModel.donation_status == 'picked_up'):
             inventoryUpdateModel.picked_up_date = str(current_date)
-            inventoryUpdateModel.drop_off_date = str(current_date + timedelta(days=2))
+            inventoryUpdateModel.drop_off_date = str(
+                current_date + timedelta(days=2))
         else:
-             inventoryUpdateModel.drop_off_date = str(current_date)
+            inventoryUpdateModel.drop_off_date = str(current_date)
         try:
-            response = MongoUtil.update_inventory_status(inventory_id, inventoryUpdateModel)
+            response = MongoUtil.update_inventory_status(
+                inventory_id, inventoryUpdateModel)
             return response
         except Exception as e:
             print(f"Error in inventory service: {e}")
             print(traceback.format_exc())
             raise HTTPException(status_code=500, detail=str(e))
-        
+
     @staticmethod
     def get_marketplaceList():
         try:
@@ -178,7 +157,7 @@ class InventoryService:
             if data == None:
                 return {"success": False, "errorCode": "EKTU001",
                         "errorMessage": "No donations found for user"}
-            
+
             # Calculate water saved
             WEIGHT_PER_ITEM = .4
             WATER_PER_KG_COTTON = 4000
@@ -186,15 +165,18 @@ class InventoryService:
             water_saved = 0
             for x in data[0]['details']:
                 if x['isCotton'] == True:
-                    water_saved += x['count'] * WEIGHT_PER_ITEM * WATER_PER_KG_COTTON
+                    water_saved += x['count'] * \
+                        WEIGHT_PER_ITEM * WATER_PER_KG_COTTON
                 if x['isCotton'] == False:
-                    water_saved += x['count'] * WEIGHT_PER_ITEM * WATER_PER_KG_OTHER_CLOTH
+                    water_saved += x['count'] * \
+                        WEIGHT_PER_ITEM * WATER_PER_KG_OTHER_CLOTH
 
             # Calculate Carbon footprint
             CARBON_PER_KG = 10
             carbon = data[0]['total'] * WEIGHT_PER_ITEM * CARBON_PER_KG
 
-            stats  = { 'water_saved': water_saved, 'carbon': carbon, 'clothes_donated': data[0]['total'] }
+            stats = {'water_saved': water_saved, 'carbon': carbon,
+                     'clothes_donated': data[0]['total']}
             return {
                 'success': True,
                 'user_data': stats,

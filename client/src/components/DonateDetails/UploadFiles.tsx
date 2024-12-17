@@ -48,7 +48,6 @@ export const UploadFiles = (props: Iprops) => {
         accept="image/*"
         multiple={false}
         maxFiles={1}
-        maxFileSize={100 * 1024}
         headerConfig={{ deleteFiles: true }}
         footerConfig={{ customMessage: "Upload picture of the item" }}
       >

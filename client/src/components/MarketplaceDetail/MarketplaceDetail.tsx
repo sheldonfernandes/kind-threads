@@ -15,7 +15,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { AppUtil } from "@/src/utils/App.util";
-
+import "./marketplaceDetail.css"
 type Iprops = {
   onUpdateStatus: (inventory_id: string, status: string) => void;
   markeplaceListData: InventoryListType | undefined;
@@ -71,7 +71,7 @@ export const MarketplaceDetail = (props: Iprops) => {
                     />
 
                     <Card.Body>
-                      <Card.Title>{item.ai_response.short_desc}</Card.Title>
+                      <Card.Title className="cardTitle" title={item.ai_response.short_desc}>{item.ai_response.short_desc}</Card.Title>
                       <Card.Text>
                         <p>
                           {item.donation_status ===
